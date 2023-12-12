@@ -3,7 +3,7 @@ title: "Kubeadm高可用集群"
 subtitle: ""
 date: 2023-11-30T17:56:35+08:00
 lastmod: 2023-12-04T13:40:35+08:00
-draft: true
+draft: false
 author: ""
 authorLink: ""
 license: ""

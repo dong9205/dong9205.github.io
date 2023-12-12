@@ -3,7 +3,7 @@ title: "Powershell Completion"
 subtitle: ""
 date: 2023-11-30T16:30:48+08:00
 lastmod: 2023-11-30T16:30:48+08:00
-draft: true
+draft: false
 author: ""
 authorLink: ""
 license: ""
