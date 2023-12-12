@@ -1,20 +1,20 @@
 ---
+weight: 0
 title: "{{ replace .TranslationBaseName "-" " " | title }}"
 subtitle: ""
 date: {{ .Date }}
 lastmod: {{ .Date }}
-draft: true
-author: ""
-authorLink: ""
+draft: false
+author: "Derrick"
+authorLink: "https://www.p-pp.cn/"
+summary: ""
 license: ""
-
 tags: [""]
-categories: [""]
+categories: 
+- "documentation"
 
 featuredImage: ""
 featuredImagePreview: ""
-
-summary: ""
 
 hiddenFromHomePage: false
 hiddenFromSearch: false
@@ -28,4 +28,6 @@ share:
   enable: true
 comment:
   enable: true
+
+lightgallery: true
 ---

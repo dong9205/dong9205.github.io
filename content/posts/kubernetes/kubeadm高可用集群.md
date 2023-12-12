@@ -1,11 +1,18 @@
 ---
+weight: 1
 title: "Kubeadm高可用集群"
 subtitle: ""
 date: 2023-11-30T17:56:35+08:00
 lastmod: 2023-12-04T13:40:35+08:00
 draft: false
-author: ""
-authorLink: ""
+author: "Derrick"
+authorLink: "https://www.p-pp.cn/"
+summary: "kubeadm 使用静态POD启动KeepAlived和Haproxy"
+images: []
+resources:
+- name: "featured-image"
+  src: "featured-image.jpg"
+
 license: ""
 
 tags: 
@@ -14,14 +21,14 @@ tags:
 - "haproxy"
 - "keepalived"
 - "高可用"
+
 categories: 
-- "kubernetes"
 - "documentation"
+- "kubernetes"
 
 featuredImage: ""
 featuredImagePreview: ""
 
-summary: ""
 
 hiddenFromHomePage: false
 hiddenFromSearch: false
@@ -30,11 +37,7 @@ toc:
   enable: true
   auto: true
 
-mapbox:
-share:
-  enable: true
-comment:
-  enable: true
+lightgallery: true
 ---
 # kubeadm高可用集群
 

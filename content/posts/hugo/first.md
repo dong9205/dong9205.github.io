@@ -1,11 +1,12 @@
 ---
+weight: 0
 title: "First"
 subtitle: ""
 date: 2023-11-28T16:12:14+08:00
 lastmod: 2023-11-28T16:12:14+08:00
 draft: false
-author: ""
-authorLink: ""
+author: "Derrick"
+authorLink: "https://www.p-pp.cn/"
 license: ""
 
 tags: 
@@ -33,5 +34,7 @@ share:
 comment:
   enable: true
 ---
+
 # hugo page
+
 first page
