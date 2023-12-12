@@ -1,19 +1,19 @@
 ---
-title: "First"
+title: "Choco"
 subtitle: ""
-date: 2023-11-28T16:12:14+08:00
-lastmod: 2023-11-28T16:12:14+08:00
+date: 2023-12-12T10:06:51+08:00
+lastmod: 2023-12-12T10:06:51+08:00
 draft: true
 author: ""
 authorLink: ""
 license: ""
 
 tags: 
-- "hugo"
+- "windows"
 
 categories: 
 - "documentation"
-- "hugo"
+- "windows"
 
 featuredImage: ""
 featuredImagePreview: ""
@@ -33,5 +33,3 @@ share:
 comment:
   enable: true
 ---
-# hugo page
-first page

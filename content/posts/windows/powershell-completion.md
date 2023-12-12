@@ -1,19 +1,19 @@
 ---
-title: "First"
+title: "Powershell Completion"
 subtitle: ""
-date: 2023-11-28T16:12:14+08:00
-lastmod: 2023-11-28T16:12:14+08:00
+date: 2023-11-30T16:30:48+08:00
+lastmod: 2023-11-30T16:30:48+08:00
 draft: true
 author: ""
 authorLink: ""
 license: ""
 
 tags: 
-- "hugo"
+- "windows"
 
 categories: 
 - "documentation"
-- "hugo"
+- "windows"
 
 featuredImage: ""
 featuredImagePreview: ""
@@ -33,5 +33,9 @@ share:
 comment:
   enable: true
 ---
-# hugo page
-first page
+
+# powershell设置自动补全
+```powershell
+notepad.exe $PROFILE
+hugo.exe completion powershell | Out-String | Invoke-Expression
+```

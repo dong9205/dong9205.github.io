@@ -783,7 +783,6 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
   page = ["HTML", "MarkDown"]
   section = ["HTML", "RSS"]
   taxonomy = ["HTML", "RSS"]
-  taxonomyTerm = ["HTML"]
 
 # Multilingual
 # 多语言
@@ -972,3 +971,8 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
         Email = "xxxx@xxxx.com"
         Phone = "555-555-555"
         RSS = true
+
+[taxonomies]
+  series = "series"
+  tag = "tags"
+  category = "categories"
