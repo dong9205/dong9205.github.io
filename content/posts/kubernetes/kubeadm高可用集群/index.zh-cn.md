@@ -11,7 +11,7 @@ summary: "kubeadm 使用静态POD启动KeepAlived和Haproxy"
 images: []
 resources:
 - name: "featured-image"
-  src: "featured-image.jpg"
+  src: "kubernetes.png"
 
 license: ""
 

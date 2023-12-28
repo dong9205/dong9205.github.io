@@ -10,6 +10,9 @@ authorLink: "https://www.p-pp.cn/"
 summary: ""
 license: ""
 tags: [""]
+resources:
+- name: "featured-image"
+  src: ""
 categories: 
 - "documentation"
 
