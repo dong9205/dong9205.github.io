@@ -1,0 +1,325 @@
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>coredns解析超时问题 - Derrick的博客</title><meta name=Description content="Derrick的个人博客"><meta property="og:title" content="coredns解析超时问题">
+<meta property="og:description" content="本文由 简悦 SimpRead 转码， 原文地址 www.jianshu.com 本文结合域名请求慢的问题，从虚拟网络定位到域名解析，根据 coredns 添加域名后缀的机制，定位 coredns 解析慢的根因。 问题现象 ======= 背景"><meta property="og:type" content="article"><meta property="og:url" content="https://example.com/%E8%A7%A3%E6%9E%90%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/"><meta property="og:image" content="https://example.com/%E8%A7%A3%E6%9E%90%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/k8s-%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E6%9E%B6%E6%9E%84.webp"><meta property="article:section" content="posts"><meta property="article:published_time" content="2023-12-27T20:09:28+08:00"><meta property="article:modified_time" content="2023-12-27T20:09:28+08:00"><meta property="og:site_name" content="Derrick的博客"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://example.com/%E8%A7%A3%E6%9E%90%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/k8s-%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E6%9E%B6%E6%9E%84.webp"><meta name=twitter:title content="coredns解析超时问题"><meta name=twitter:description content="本文由 简悦 SimpRead 转码， 原文地址 www.jianshu.com 本文结合域名请求慢的问题，从虚拟网络定位到域名解析，根据 coredns 添加域名后缀的机制，定位 coredns 解析慢的根因。 问题现象 ======= 背景"><meta name=application-name content="Derrick的博客"><meta name=apple-mobile-web-app-title content="Derrick的博客"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://example.com/%E8%A7%A3%E6%9E%90%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/><link rel=prev href=https://example.com/502%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/><link rel=next href=https://example.com/426%E7%8A%B6%E6%80%81%E7%A0%81/><link rel=stylesheet href=/css/style.min.css><link rel=preload href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css></noscript><link rel=preload href=https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"coredns解析超时问题","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/example.com\/%E8%A7%A3%E6%9E%90%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98\/"},"image":[{"@type":"ImageObject","url":"https:\/\/example.com\/%E8%A7%A3%E6%9E%90%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98\/k8s-%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E6%9E%B6%E6%9E%84.webp","width":1299,"height":599}],"genre":"posts","keywords":"","wordcount":2385,"url":"https:\/\/example.com\/%E8%A7%A3%E6%9E%90%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98\/","datePublished":"2023-12-27T20:09:28+08:00","dateModified":"2023-12-27T20:09:28+08:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"xxxx","logo":"https:\/\/example.com\/images\/avatar.jpg"},"author":{"@type":"Person","name":"Derrick"},"description":""}</script></head><body data-header-desktop=fixed data-header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title=Derrick的博客><span class=header-title-pre><i class='far fa-kiss-wink-heart fa-fw' aria-hidden=true></i></span>Derrick的博客</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>所有文章 </a><a class=menu-item href=/tags/>标签 </a><a class=menu-item href=/categories/>分类 </a><a class=menu-item href=/categories/documentation/>文档 </a><a class=menu-item href=/about/>关于 </a><a class=menu-item href=https://github.com/dong9205/dong9205.github.io.git title=GitHub rel="noopener noreffer" target=_blank><i class='fab fa-github fa-fw' aria-hidden=true></i> </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=搜索><i class="fas fa-search fa-fw" aria-hidden=true></i>
+</a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=清空><i class="fas fa-times-circle fa-fw" aria-hidden=true></i>
+</a><span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin" aria-hidden=true></i>
+</span></span><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题><i class="fas fa-adjust fa-fw" aria-hidden=true></i>
+</a><a href=javascript:void(0); class="menu-item language" title=选择语言><i class="fa fa-globe" aria-hidden=true></i>
+<select class=language-select id=language-select-desktop onchange="location=this.value"><option value=/%E8%A7%A3%E6%9E%90%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/ selected>简体中文</option></select></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title=Derrick的博客><span class=header-title-pre><i class='far fa-kiss-wink-heart fa-fw' aria-hidden=true></i></span>Derrick的博客</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=搜索><i class="fas fa-search fa-fw" aria-hidden=true></i>
+</a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=清空><i class="fas fa-times-circle fa-fw" aria-hidden=true></i>
+</a><span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin" aria-hidden=true></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>取消</a></div><a class=menu-item href=/posts/ title>所有文章</a><a class=menu-item href=/tags/ title>标签</a><a class=menu-item href=/categories/ title>分类</a><a class=menu-item href=/categories/documentation/ title>文档</a><a class=menu-item href=/about/ title>关于</a><a class=menu-item href=https://github.com/dong9205/dong9205.github.io.git title=GitHub rel="noopener noreffer" target=_blank><i class='fab fa-github fa-fw' aria-hidden=true></i></a><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw" aria-hidden=true></i>
+</a><a href=javascript:void(0); class=menu-item title=选择语言><i class="fa fa-globe fa-fw" aria-hidden=true></i>
+<select class=language-select onchange="location=this.value"><option value=/%E8%A7%A3%E6%9E%90%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/ selected>简体中文</option></select></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">coredns解析超时问题</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=https://www.p-pp.cn/ title=Author target=_blank rel="noopener noreffer author" class=author><i class="fas fa-user-circle fa-fw" aria-hidden=true></i>Derrick</a></span>&nbsp;<span class=post-category>收录于 <a href=/categories/documentation/><i class="far fa-folder fa-fw" aria-hidden=true></i>文档</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw" aria-hidden=true></i>&nbsp;<time datetime=2023-12-27>2023-12-27</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden=true></i>&nbsp;约 2385 字&nbsp;
+<i class="far fa-clock fa-fw" aria-hidden=true></i>&nbsp;预计阅读 5 分钟&nbsp;<span id=/%E8%A7%A3%E6%9E%90%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/ class=leancloud_visitors data-flag-title=coredns解析超时问题>
+<i class="far fa-eye fa-fw" aria-hidden=true></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;次阅读
+</span>&nbsp;</div></div><div class=featured-image><img class=lazyload src=/svg/loading.min.svg data-src=/%E8%A7%A3%E6%9E%90%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/k8s-%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E6%9E%B6%E6%9E%84.webp data-srcset="/%E8%A7%A3%E6%9E%90%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/k8s-%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E6%9E%B6%E6%9E%84.webp, /%E8%A7%A3%E6%9E%90%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/k8s-%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E6%9E%B6%E6%9E%84.webp 1.5x, /%E8%A7%A3%E6%9E%90%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/k8s-%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E6%9E%B6%E6%9E%84.webp 2x" data-sizes=auto alt=/%E8%A7%A3%E6%9E%90%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/k8s-%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E6%9E%B6%E6%9E%84.webp title=/%E8%A7%A3%E6%9E%90%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/k8s-%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E6%9E%B6%E6%9E%84.webp></div><div class="details toc" id=toc-static data-kept><div class="details-summary toc-title"><span>目录</span>
+<span><i class="details-icon fas fa-angle-right" aria-hidden=true></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#21-虚拟化网络分析>2.1 虚拟化网络分析</a><ul><li><ul><li><a href=#211-curl-命令详解>2.1.1 curl 命令详解</a></li><li><a href=#212-curl-获取-http-各阶段的响应时间>2.1.2 curl 获取 http 各阶段的响应时间</a></li></ul></li></ul></li><li><a href=#22-域名解析分析>2.2 域名解析分析</a><ul><li><a href=#221-外部分析---coredns-解析域名>2.2.1 外部分析 - coredns 解析域名</a><ul><li><ul><li><a href=#ipv4-和-ipv6-耗时对比>IPV4 和 IPV6 耗时对比</a></li></ul></li></ul></li><li><a href=#222-内部分析---容器内部解析域名>2.2.2 内部分析 - 容器内部解析域名</a><ul><li><a href=#通过宿主机抓起-pod-网络数据报>通过宿主机抓起 Pod 网络数据报</a></li></ul></li></ul></li></ul><ul><li><ul><li><a href=#-nameserver>① nameserver</a></li><li><a href=#-search>② search</a></li><li><a href=#-options>③ options</a></li></ul></li></ul><ul><li><ul><li><a href=#41-使用简洁域名>4.1 使用简洁域名</a></li><li><a href=#42-resolvconf-配置更改>4.2 resolv.conf 配置更改</a></li></ul></li></ul></nav></div></div><div class=content id=content><blockquote><p>本文由 <a href=http://ksria.com/simpread/ target=_blank rel="noopener noreffer">简悦 SimpRead</a> 转码， 原文地址 <a href=https://www.jianshu.com/p/f6b46fe2cbfb target=_blank rel="noopener noreffer">www.jianshu.com</a></p></blockquote><blockquote><p>本文结合<strong>域名请求慢的问题</strong>，从<strong>虚拟网络</strong>定位到<strong>域名解析</strong>，根据 <strong>coredns 添加域名后缀的机制</strong>，定位 coredns 解析慢的根因。</p></blockquote><ol><li>问题现象
+=======</li></ol><p><strong>背景</strong>：项目是微服务 + flink，其中 flink 采用 k8s session standalone 的部署模式。<br><strong>问题</strong>：微服务通过 flink restful api 启动作业的平均时长超过 40s，导致客户端超时和作业失联。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>#为了排除 flink 内部启动作业耗时因素，使用 /jobs/overview 测试微服务到 flink 的网络耗时
+</span></span><span class=line><span class=cl>$time curl http://flink-jobmanager.default.svc.cluster.local:8091/jobs/overview
+</span></span><span class=line><span class=cl>{&#34;jobs&#34;:[{&#34;jid&#34;:&#34;0bf232afb7febbb8b070221833ddb99c&#34;,&#34;name&#34;:&#34;TopSpeedWindowing&#34;,&#34;state&#34;:&#34;RUNNING&#34;,&#34;start-time&#34;:1631687894914,&#34;end-time&#34;:-1,&#34;duration&#34;:701488855,&#34;last-modification&#34;:1631687895895,&#34;tasks&#34;:{&#34;total&#34;:3,&#34;created&#34;:0,&#34;scheduled&#34;:0,&#34;deploying&#34;:0,&#34;running&#34;:3,&#34;finished&#34;:0,&#34;canceling&#34;:0,&#34;canceled&#34;:0,&#34;failed&#34;:0,&#34;reconciling&#34;:0}}]}
+</span></span><span class=line><span class=cl>real    0m10.528s
+</span></span><span class=line><span class=cl>user    0m0.004s
+</span></span><span class=line><span class=cl>sys     0m0.005s
+</span></span></code></pre></td></tr></table></div></div><ol start=2><li>根因定位
+=======</li></ol><blockquote><p>定位思路：理解 Service <a href=https://www.jianshu.com/p/84b55b7cfa65 target=_blank rel="noopener noreffer">【K8s 精选】Kubernetes Service 介绍</a>。<strong>在使用 service name 即域名的场景下，Client Pod3 首先拿着域名去 coredns 解析成 ClusterIP，接着去请求 ClusterIP，最后通过 Kube-Proxy 把请求转发到目标后端 Pod。</strong></p><p><img class=lazyload src=/svg/loading.min.svg data-src=k8s-%e6%9c%8d%e5%8a%a1%e5%8f%91%e7%8e%b0%e6%9e%b6%e6%9e%84.webp data-srcset="k8s-%e6%9c%8d%e5%8a%a1%e5%8f%91%e7%8e%b0%e6%9e%b6%e6%9e%84.webp, k8s-%e6%9c%8d%e5%8a%a1%e5%8f%91%e7%8e%b0%e6%9e%b6%e6%9e%84.webp 1.5x, k8s-%e6%9c%8d%e5%8a%a1%e5%8f%91%e7%8e%b0%e6%9e%b6%e6%9e%84.webp 2x" data-sizes=auto alt=k8s-服务发现架构.webp title=k8s-服务发现架构.webp> Kubernetes 服务发现架构. JPG</p></blockquote><h2 id=21-虚拟化网络分析>2.1 虚拟化网络分析</h2><h4 id=211-curl-命令详解>2.1.1 curl 命令详解</h4><p>参考 <a href=https://www.jianshu.com/p/25746a2f89bc target=_blank rel="noopener noreffer">curl 命令详解</a>，例如</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>curl --header &#34;Content-Type: application/json&#34;  -X POST   --data &#39;{&#34;text&#34;:&#34;germany&#34;}&#39;   https://labs.tib.eu/falcon/api?mode=short
+</span></span></code></pre></td></tr></table></div></div><h4 id=212-curl-获取-http-各阶段的响应时间>2.1.2 curl 获取 http 各阶段的响应时间</h4><p>参考<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fblog.csdn.net%2Fhqzxsc2006%2Farticle%2Fdetails%2F50547684" target=_blank rel="noopener noreffer">通过 curl 得到 http 各阶段的响应时间</a></p><blockquote><p>① <strong>time_namelookup</strong>：DNS 解析时间<br>② <strong>time_connect</strong>：连接时间，从请求开始到 DNS 解析完毕所用时间。单纯的连接时间 = time_connect - time_namelookup<br>③ <strong>time_appconnect</strong>：建立完成时间，例如 SSL/SSH 等建立连接或者完成三次握手的时间。<br>④ <strong>time_redirect</strong>：重定向时间，包括最后一次传输前的几次重定向的 DNS 解析、连接、预传输、传输时间。<br>⑤ <strong>time_pretransfer</strong>： 从开始到准备传输的时间。<br>⑥ <strong>time_starttransfer</strong>：开始传输时间。在 client 发出请求后，服务端返回数据的第一个字节所用的时间。</p></blockquote><p>进入业务容器，编辑完获取数据的格式后，执行 curl 命令。</p><blockquote><p><strong>/dev/null</strong> 表示空设备，即丢弃一切写入的数据，但显示写入操作成功。</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>$vim curl-format.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>time_namelookup: %{time_namelookup}\n
+</span></span><span class=line><span class=cl>time_connect: %{time_connect}\n
+</span></span><span class=line><span class=cl>time_appconnect: %{time_appconnect}\n
+</span></span><span class=line><span class=cl>time_redirect: %{time_redirect}\n
+</span></span><span class=line><span class=cl>time_pretransfer: %{time_pretransfer}\n
+</span></span><span class=line><span class=cl>time_starttransfer: %{time_starttransfer}\n
+</span></span><span class=line><span class=cl>----------\n
+</span></span><span class=line><span class=cl>time_total: %{time_total}\n
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=o>$</span><span class=n>kubectl</span> <span class=n>get</span> <span class=n>svc</span> <span class=o>|</span><span class=n>grep</span> <span class=n>flink</span>
+</span></span><span class=line><span class=cl><span class=n>flink</span><span class=o>-</span><span class=n>jobmanager</span>                          <span class=n>ClusterIP</span>   <span class=mf>10.96</span><span class=o>.</span><span class=mf>0.123</span>   <span class=o>&lt;</span><span class=n>none</span><span class=o>&gt;</span>        <span class=mi>8123</span><span class=o>/</span><span class=n>TCP</span><span class=p>,</span><span class=mi>8124</span><span class=o>/</span><span class=n>TCP</span><span class=p>,</span><span class=mi>8091</span><span class=o>/</span><span class=n>TCP</span>   <span class=mi>4</span><span class=n>d22h</span>
+</span></span><span class=line><span class=cl><span class=c1># 首先使用 ClusterIP 测试接口调用时长</span>
+</span></span><span class=line><span class=cl><span class=o>$</span><span class=n>curl</span> <span class=o>-</span><span class=n>w</span> <span class=s2>&#34;@curl-format.txt&#34;</span> <span class=o>-</span><span class=n>o</span> <span class=o>/</span><span class=n>dev</span><span class=o>/</span><span class=n>null</span> <span class=o>-</span><span class=n>l</span> <span class=s2>&#34;http://10.96.0.123:8091/jobs/overview&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=o>%</span> <span class=n>Total</span>    <span class=o>%</span> <span class=n>Received</span> <span class=o>%</span> <span class=n>Xferd</span>  <span class=n>Average</span> <span class=n>Speed</span>   <span class=n>Time</span>    <span class=n>Time</span>     <span class=n>Time</span>  <span class=n>Current</span>
+</span></span><span class=line><span class=cl>                                 <span class=n>Dload</span>  <span class=n>Upload</span>   <span class=n>Total</span>   <span class=n>Spent</span>    <span class=n>Left</span>  <span class=n>Speed</span>
+</span></span><span class=line><span class=cl><span class=mi>100</span>   <span class=mi>660</span>  <span class=mi>100</span>   <span class=mi>660</span>    <span class=mi>0</span>     <span class=mi>0</span>  <span class=mi>81865</span>      <span class=mi>0</span> <span class=o>--</span><span class=p>:</span><span class=o>--</span><span class=p>:</span><span class=o>--</span> <span class=o>--</span><span class=p>:</span><span class=o>--</span><span class=p>:</span><span class=o>--</span> <span class=o>--</span><span class=p>:</span><span class=o>--</span><span class=p>:</span><span class=o>--</span> <span class=mi>94285</span>
+</span></span><span class=line><span class=cl><span class=n>time_namelookup</span><span class=p>:</span> <span class=mf>0.004</span>
+</span></span><span class=line><span class=cl><span class=n>time_connect</span><span class=p>:</span> <span class=mf>0.005</span>
+</span></span><span class=line><span class=cl><span class=n>time_appconnect</span><span class=p>:</span> <span class=mf>0.000</span>
+</span></span><span class=line><span class=cl><span class=n>time_redirect</span><span class=p>:</span> <span class=mf>0.000</span>
+</span></span><span class=line><span class=cl><span class=n>time_pretransfer</span><span class=p>:</span> <span class=mf>0.005</span>
+</span></span><span class=line><span class=cl><span class=n>time_starttransfer</span><span class=p>:</span> <span class=mf>0.008</span>
+</span></span><span class=line><span class=cl><span class=o>----------</span>
+</span></span><span class=line><span class=cl><span class=n>time_total</span><span class=p>:</span> <span class=mf>0.008</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 然后使用 service name 即域名测试接口调用时长</span>
+</span></span><span class=line><span class=cl><span class=o>$</span><span class=n>curl</span> <span class=o>-</span><span class=n>w</span> <span class=s2>&#34;@curl-format.txt&#34;</span> <span class=o>-</span><span class=n>o</span> <span class=o>/</span><span class=n>dev</span><span class=o>/</span><span class=n>null</span> <span class=o>-</span><span class=n>l</span> <span class=s2>&#34;http://flink-jobmanager.default.svc.cluster.local:8091/jobs/overview&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=o>%</span> <span class=n>Total</span>    <span class=o>%</span> <span class=n>Received</span> <span class=o>%</span> <span class=n>Xferd</span>  <span class=n>Average</span> <span class=n>Speed</span>   <span class=n>Time</span>    <span class=n>Time</span>     <span class=n>Time</span>  <span class=n>Current</span>
+</span></span><span class=line><span class=cl>                                 <span class=n>Dload</span>  <span class=n>Upload</span>   <span class=n>Total</span>   <span class=n>Spent</span>    <span class=n>Left</span>  <span class=n>Speed</span>
+</span></span><span class=line><span class=cl><span class=mi>100</span>   <span class=mi>660</span>  <span class=mi>100</span>   <span class=mi>660</span>    <span class=mi>0</span>     <span class=mi>0</span>     <span class=mi>62</span>      <span class=mi>0</span>  <span class=mi>0</span><span class=p>:</span><span class=mi>00</span><span class=p>:</span><span class=mi>10</span>  <span class=mi>0</span><span class=p>:</span><span class=mi>00</span><span class=p>:</span><span class=mi>10</span> <span class=o>--</span><span class=p>:</span><span class=o>--</span><span class=p>:</span><span class=o>--</span>   <span class=mi>164</span>
+</span></span><span class=line><span class=cl><span class=n>time_melookup</span><span class=p>:</span> <span class=mf>10.516</span>
+</span></span><span class=line><span class=cl><span class=n>time_connect</span><span class=p>:</span> <span class=mf>10.517</span>
+</span></span><span class=line><span class=cl><span class=n>time_appconnect</span><span class=p>:</span> <span class=mf>0.000</span>
+</span></span><span class=line><span class=cl><span class=n>time_redirect</span><span class=p>:</span> <span class=mf>0.000</span>
+</span></span><span class=line><span class=cl><span class=n>time_pretransfer</span><span class=p>:</span> <span class=mf>10.517</span>
+</span></span><span class=line><span class=cl><span class=n>time_starttransfer</span><span class=p>:</span> <span class=mf>10.520</span>
+</span></span><span class=line><span class=cl><span class=o>----------</span>
+</span></span><span class=line><span class=cl><span class=n>time_total</span><span class=p>:</span> <span class=mf>10.520</span>
+</span></span></code></pre></td></tr></table></div></div><p>对比 ClusterIP 和 service name 的接口调用时长，由 <strong>time_namelookup</strong> 可知 DNS 解析时间长。</p><h2 id=22-域名解析分析>2.2 域名解析分析</h2><h3 id=221-外部分析---coredns-解析域名>2.2.1 外部分析 - coredns 解析域名</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>$kubectl logs coredns-66509f5cf2-km1q4 -nkube-system
+</span></span><span class=line><span class=cl>2021-09-23T01:54:04.590Z [ERROR] plugin/errors: 2 flink-jobmanager.default.svc.cluster.local.openstacklocal. A: read udp 10.244.0.18:32960-&gt;100.79.1.250:53: i/o timeout
+</span></span><span class=line><span class=cl>2021-09-23T01:54:09.592Z [ERROR] plugin/errors: 2 flink-jobmanager.default.svc.cluster.local.openstacklocal. A: read udp 10.244.0.18:59978-&gt;100.79.1.250:53: i/o timeout
+</span></span><span class=line><span class=cl>2021-09-23T01:56:00.609Z [ERROR] plugin/errors: 2 flink-jobmanager.default.svc.cluster.local.openstacklocal. AAAA: read udp 10.244.2.19:41797-&gt;100.79.1.250:53: i/o timeout
+</span></span><span class=line><span class=cl>2021-09-23T01:56:02.610Z [ERROR] plugin/errors: 2 flink-jobmanager.default.svc.cluster.local.openstacklocal. AAAA: read udp 10.244.2.19:48375-&gt;100.79.1.250:53: i/o timeout
+</span></span></code></pre></td></tr></table></div></div><p>由 coredns 后台关键日志 <strong>A: read udp xxx->xxx: i/o timeout</strong> 可知 IPV4 解析超时，<strong>AAAA: read udp xxx->xxx: i/o timeout</strong> 可知 IPV6 解析也超时。</p><h5 id=ipv4-和-ipv6-耗时对比>IPV4 和 IPV6 耗时对比</h5><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=c1># IPV4 请求耗时</span>
+</span></span><span class=line><span class=cl><span class=o>$</span><span class=n>curl</span> <span class=o>-</span><span class=mi>4</span> <span class=o>-</span><span class=n>w</span> <span class=s2>&#34;@curl-format.txt&#34;</span> <span class=o>-</span><span class=n>o</span> <span class=o>/</span><span class=n>dev</span><span class=o>/</span><span class=n>null</span> <span class=o>-</span><span class=n>l</span> <span class=s2>&#34;http://flink-jobmanager.default.svc.cluster.local:8091/jobs/overview&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=o>%</span> <span class=n>Total</span>    <span class=o>%</span> <span class=n>Received</span> <span class=o>%</span> <span class=n>Xferd</span>  <span class=n>Average</span> <span class=n>Speed</span>   <span class=n>Time</span>    <span class=n>Time</span>     <span class=n>Time</span>  <span class=n>Current</span>
+</span></span><span class=line><span class=cl>                                 <span class=n>Dload</span>  <span class=n>Upload</span>   <span class=n>Total</span>   <span class=n>Spent</span>    <span class=n>Left</span>  <span class=n>Speed</span>
+</span></span><span class=line><span class=cl>  <span class=mi>0</span>     <span class=mi>0</span>    <span class=mi>0</span>     <span class=mi>0</span>    <span class=mi>0</span>     <span class=mi>0</span>      <span class=mi>0</span>      <span class=mi>0</span> <span class=o>--</span><span class=p>:</span><span class=o>--</span><span class=p>:</span><span class=o>--</span>  <span class=mi>0</span><span class=p>:</span><span class=mi>00</span><span class=p>:</span><span class=mi>03</span> <span class=o>--</span><span class=p>:</span><span class=o>--</span><span class=p>:</span><span class=o>--</span>     <span class=mi>0</span>
+</span></span><span class=line><span class=cl><span class=n>time_melookup</span><span class=p>:</span> <span class=mf>0.000</span>
+</span></span><span class=line><span class=cl><span class=n>time_connect</span><span class=p>:</span> <span class=mf>0.000</span>
+</span></span><span class=line><span class=cl><span class=n>time_appconnect</span><span class=p>:</span> <span class=mf>0.000</span>
+</span></span><span class=line><span class=cl><span class=n>time_redirect</span><span class=p>:</span> <span class=mf>0.000</span>
+</span></span><span class=line><span class=cl><span class=n>time_pretransfer</span><span class=p>:</span> <span class=mf>0.000</span>
+</span></span><span class=line><span class=cl><span class=n>time_starttransfer</span><span class=p>:</span> <span class=mf>0.000</span>
+</span></span><span class=line><span class=cl><span class=o>----------</span>
+</span></span><span class=line><span class=cl><span class=n>time_total</span><span class=p>:</span> <span class=mf>3.510</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># IPV6 请求耗时</span>
+</span></span><span class=line><span class=cl><span class=o>$</span><span class=n>curl</span> <span class=o>-</span><span class=mi>6</span> <span class=o>-</span><span class=n>w</span> <span class=s2>&#34;@curl-format.txt&#34;</span> <span class=o>-</span><span class=n>o</span> <span class=o>/</span><span class=n>dev</span><span class=o>/</span><span class=n>null</span> <span class=o>-</span><span class=n>l</span> <span class=s2>&#34;http://flink-jobmanager.default.svc.cluster.local:8091/jobs/overview&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=o>%</span> <span class=n>Total</span>    <span class=o>%</span> <span class=n>Received</span> <span class=o>%</span> <span class=n>Xferd</span>  <span class=n>Average</span> <span class=n>Speed</span>   <span class=n>Time</span>    <span class=n>Time</span>     <span class=n>Time</span>  <span class=n>Current</span>
+</span></span><span class=line><span class=cl>                                 <span class=n>Dload</span>  <span class=n>Upload</span>   <span class=n>Total</span>   <span class=n>Spent</span>    <span class=n>Left</span>  <span class=n>Speed</span>
+</span></span><span class=line><span class=cl><span class=mi>100</span>   <span class=mi>660</span>  <span class=mi>100</span>   <span class=mi>660</span>    <span class=mi>0</span>     <span class=mi>0</span>    <span class=mi>146</span>      <span class=mi>0</span>  <span class=mi>0</span><span class=p>:</span><span class=mi>00</span><span class=p>:</span><span class=mi>04</span>  <span class=mi>0</span><span class=p>:</span><span class=mi>00</span><span class=p>:</span><span class=mi>04</span> <span class=o>--</span><span class=p>:</span><span class=o>--</span><span class=p>:</span><span class=o>--</span>   <span class=mi>146</span>
+</span></span><span class=line><span class=cl><span class=n>time_melookup</span><span class=p>:</span> <span class=mf>4.511</span>
+</span></span><span class=line><span class=cl><span class=n>time_connect</span><span class=p>:</span> <span class=mf>4.512</span>
+</span></span><span class=line><span class=cl><span class=n>time_appconnect</span><span class=p>:</span> <span class=mf>0.000</span>
+</span></span><span class=line><span class=cl><span class=n>time_redirect</span><span class=p>:</span> <span class=mf>0.000</span>
+</span></span><span class=line><span class=cl><span class=n>time_pretransfer</span><span class=p>:</span> <span class=mf>4.512</span>
+</span></span><span class=line><span class=cl><span class=n>time_starttransfer</span><span class=p>:</span> <span class=mf>4.515</span>
+</span></span><span class=line><span class=cl><span class=o>----------</span>
+</span></span><span class=line><span class=cl><span class=n>time_total</span><span class=p>:</span> <span class=mf>4.515</span>
+</span></span></code></pre></td></tr></table></div></div><p>结论：IPV6 解析比 IPV4 多耗时约 20%，说明 IPV6 对域名解析有一定的影响，建议 coredns 关闭 IPV6 解析。然而直接用 IPV4 解析也耗时 3s+，需要进一步对容器内部进行抓包分析。</p><blockquote><p>建议：如果 IPV6 模式没有使用，可以关闭。</p></blockquote><h3 id=222-内部分析---容器内部解析域名>2.2.2 内部分析 - 容器内部解析域名</h3><h4 id=通过宿主机抓起-pod-网络数据报>通过宿主机抓起 Pod 网络数据报</h4><p><strong>nsenter 可以进入 Pod 容器 net 命名空间，同时提供一个快速进入 Pod 容器 net 命名空间脚本</strong>，可以参考<a href=https://www.jianshu.com/p/d68ffe420578 target=_blank rel="noopener noreffer">在容器环境使用 tcpdump 抓包</a></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl># 步骤1 获取容器的 pid
+</span></span><span class=line><span class=cl>$ docker ps |grep flink-jobmanager-7b58565dc8-msgpp
+</span></span><span class=line><span class=cl>1386ce6244ae        192.168.31.37:5000/flink                      &#34;bash -cx /opt/flink/s…&#34;   3 weeks ago         Up 3 weeks                              k8s_flink-jobmanager-7b58565dc8-msgpp_4b6d15d8-7b54-41fb-bf46-ffa91aa33963_0
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>$ docker inspect 1386ce6244ae| grep Pid
+</span></span><span class=line><span class=cl>            &#34;Pid&#34;: 63046,
+</span></span><span class=line><span class=cl>            &#34;PidMode&#34;: &#34;&#34;,
+</span></span><span class=line><span class=cl>            &#34;PidsLimit&#34;: 0,
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl># 步骤2 根据 pid 执行命令
+</span></span><span class=line><span class=cl># 53 是 corends 域名解析端口 
+</span></span><span class=line><span class=cl>$ nsenter -t 63046 -n
+</span></span><span class=line><span class=cl>$ tcpdump &#39;src host 10.244.3.81 and src port 8091&#39;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl># 步骤3 打开新窗口，进入容器并执行上述的 curl 命令
+</span></span><span class=line><span class=cl>$curl -w &#34;@curl-format.txt&#34; -o /dev/null -l &#34;http://flink-jobmanager.default.svc.cluster.local:8091/jobs/overview&#34;
+</span></span></code></pre></td></tr></table></div></div><p>下载 tcpdump 的抓包数据 xxx.pcap， <a href=https://www.jianshu.com/p/2e36392c4ef7 target=_blank rel="noopener noreffer">利用 wireshark 分析 tcpdump 报文</a>，其结果如下：<br>① <strong>flink-jobmanager.default.svc.cluster.local</strong> 域名解析成 ip 的时间约 10s<br>② 在域名解析的过程中，在 flink-jobmanager.default.svc.cluster.local 的基础上，其后缀依次添加 <strong>default.svc.cluster.local</strong>、<strong>svc.cluster.local</strong>、<strong>cluster.local</strong>、<strong>openstacklocal</strong></p><p>查看业务容器中的配置 <strong>/etc/resolv.conf</strong>，发现上述的后缀恰好是 search 内容。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>$ cat /etc/resolv.conf
+</span></span><span class=line><span class=cl>nameserver 10.96.0.10
+</span></span><span class=line><span class=cl>search default.svc.cluster.local svc.cluster.local cluster.local openstacklocal
+</span></span><span class=line><span class=cl>options ndots:5 single-request-reopen
+</span></span></code></pre></td></tr></table></div></div><h1 id=3-容器-etcresolvconf-配置分析>3 容器 /etc/resolv.conf 配置分析</h1><p>容器 /etc/resolv.conf 配置如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>nameserver 10.96.0.10
+</span></span><span class=line><span class=cl>search default.svc.cluster.local svc.cluster.local cluster.local openstacklocal
+</span></span><span class=line><span class=cl>options ndots:5 single-request-reopen
+</span></span></code></pre></td></tr></table></div></div><h3 id=-nameserver>① nameserver</h3><p>resolv.conf 文件的第一行是 nameserver，内容是 <strong>coredns 的 ClusterIP</strong></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>$kubectl get svc -nkube-system |grep dns
+</span></span><span class=line><span class=cl>kube-dns   ClusterIP   10.96.0.10   &lt;none&gt;        53/UDP,53/TCP   167d
+</span></span></code></pre></td></tr></table></div></div><h3 id=-search>② search</h3><p>resolv.conf 文件的第一行是 search。当域名解析的时候，将域名依次添加后缀，例如：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>flink-jobmanager.default.svc.cluster.local.default.svc.cluster.local
+</span></span><span class=line><span class=cl>flink-jobmanager.default.svc.cluster.local.svc.cluster.local
+</span></span><span class=line><span class=cl>flink-jobmanager.default.svc.cluster.local.cluster.local
+</span></span><span class=line><span class=cl>flink-jobmanager.default.svc.cluster.local.openstacklocal
+</span></span></code></pre></td></tr></table></div></div><h3 id=-options>③ options</h3><p>resolv.conf 文件的第一行是 options 其它项，常见配置是 ndots。<strong>ndots: 5 表示如果域名包含的 &ldquo;.&rdquo; 少于 5 个，则先添加 search 后缀，再使用绝对域名；如果域名包含的 &ldquo;.&rdquo; 大于等于 5 个，则先使用绝对域名，再添加 search 后缀</strong>。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>#样例1 域名a.b.c.d.e，则域名的顺序如下
+</span></span><span class=line><span class=cl>a.b.c.d.e.default.svc.cluster.local
+</span></span><span class=line><span class=cl>a.b.c.d.e.svc.cluster.local
+</span></span><span class=line><span class=cl>a.b.c.d.e.cluster.local
+</span></span><span class=line><span class=cl>a.b.c.d.e.openstacklocal
+</span></span><span class=line><span class=cl>a.b.c.d.e
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>#样例2 域名a.b.c.d.e.f，则域名的顺序如下
+</span></span><span class=line><span class=cl>a.b.c.d.e.f
+</span></span><span class=line><span class=cl>a.b.c.d.e.f.default.svc.cluster.local
+</span></span><span class=line><span class=cl>a.b.c.d.e.f.svc.cluster.local
+</span></span><span class=line><span class=cl>a.b.c.d.e.f.cluster.local
+</span></span><span class=line><span class=cl>a.b.c.d.e.f.openstacklocal
+</span></span></code></pre></td></tr></table></div></div><p>结合 flink-jobmanager.default.svc.cluster.local 域名解析慢的问题，由于该域名包含 &ldquo;.&rdquo; 等于 4，即少于 5，所以会首先依次添加后缀 default.svc.cluster.local、svc.cluster.local、cluster.local openstacklocal。因此，解决方案有 ①<strong>flink-jobmanager.default.svc.cluster.local 修改为 flink-jobmanager</strong>；②<strong>ndots: 5 修改为 ndots: 4</strong>。</p><h1 id=4-解决方案>4 解决方案</h1><h3 id=41-使用简洁域名>4.1 使用简洁域名</h3><p>将访问的域名从 <strong>flink-jobmanager.default.svc.cluster.local 修改为 flink-jobmanager</strong>，效果如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=n>curl</span> <span class=o>-</span><span class=n>w</span> <span class=s2>&#34;@curl-format.txt&#34;</span> <span class=o>-</span><span class=n>o</span> <span class=o>/</span><span class=n>dev</span><span class=o>/</span><span class=n>null</span> <span class=o>-</span><span class=n>l</span> <span class=s2>&#34;http://flink-jobmanager:8091/jobs/overview&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=o>%</span> <span class=n>Total</span>    <span class=o>%</span> <span class=n>Received</span> <span class=o>%</span> <span class=n>Xferd</span>  <span class=n>Average</span> <span class=n>Speed</span>   <span class=n>Time</span>    <span class=n>Time</span>     <span class=n>Time</span>  <span class=n>Current</span>
+</span></span><span class=line><span class=cl>                                 <span class=n>Dload</span>  <span class=n>Upload</span>   <span class=n>Total</span>   <span class=n>Spent</span>    <span class=n>Left</span>  <span class=n>Speed</span>
+</span></span><span class=line><span class=cl><span class=mi>100</span>   <span class=mi>660</span>  <span class=mi>100</span>   <span class=mi>660</span>    <span class=mi>0</span>     <span class=mi>0</span>  <span class=mi>82038</span>      <span class=mi>0</span> <span class=o>--</span><span class=p>:</span><span class=o>--</span><span class=p>:</span><span class=o>--</span> <span class=o>--</span><span class=p>:</span><span class=o>--</span><span class=p>:</span><span class=o>--</span> <span class=o>--</span><span class=p>:</span><span class=o>--</span><span class=p>:</span><span class=o>--</span> <span class=mi>94285</span>
+</span></span><span class=line><span class=cl><span class=n>time_melookup</span><span class=p>:</span> <span class=mf>0.004</span>
+</span></span><span class=line><span class=cl><span class=n>time_connect</span><span class=p>:</span> <span class=mf>0.005</span>
+</span></span><span class=line><span class=cl><span class=n>time_appconnect</span><span class=p>:</span> <span class=mf>0.000</span>
+</span></span><span class=line><span class=cl><span class=n>time_redirect</span><span class=p>:</span> <span class=mf>0.000</span>
+</span></span><span class=line><span class=cl><span class=n>time_pretransfer</span><span class=p>:</span> <span class=mf>0.005</span>
+</span></span><span class=line><span class=cl><span class=n>time_starttransfer</span><span class=p>:</span> <span class=mf>0.008</span>
+</span></span><span class=line><span class=cl><span class=o>----------</span>
+</span></span><span class=line><span class=cl><span class=n>time_total</span><span class=p>:</span> <span class=mf>0.008</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=42-resolvconf-配置更改>4.2 resolv.conf 配置更改</h3><p>将 /etc/resolv.conf 的 options 配置 <strong>ndots: 5 修改为 ndots: 4</strong>，或者修改 deployment 的 yaml 配置，效果如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>     # 修改 deployment 的 yaml 配置
+</span></span><span class=line><span class=cl>     # spec.spec.dnsConfig.options[].ndots
+</span></span><span class=line><span class=cl>      dnsConfig:
+</span></span><span class=line><span class=cl>        options:
+</span></span><span class=line><span class=cl>          - name: ndots
+</span></span><span class=line><span class=cl>            value: 4
+</span></span><span class=line><span class=cl>          - name: single-request-reopen
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=n>curl</span> <span class=o>-</span><span class=n>w</span> <span class=s2>&#34;@curl-format.txt&#34;</span> <span class=o>-</span><span class=n>o</span> <span class=o>/</span><span class=n>dev</span><span class=o>/</span><span class=n>null</span> <span class=o>-</span><span class=n>l</span> <span class=s2>&#34;http://flink-jobmanager.default.svc.cluster.local:8091/jobs/overview&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=o>%</span> <span class=n>Total</span>    <span class=o>%</span> <span class=n>Received</span> <span class=o>%</span> <span class=n>Xferd</span>  <span class=n>Average</span> <span class=n>Speed</span>   <span class=n>Time</span>    <span class=n>Time</span>     <span class=n>Time</span>  <span class=n>Current</span>
+</span></span><span class=line><span class=cl>                                 <span class=n>Dload</span>  <span class=n>Upload</span>   <span class=n>Total</span>   <span class=n>Spent</span>    <span class=n>Left</span>  <span class=n>Speed</span>
+</span></span><span class=line><span class=cl><span class=mi>100</span>   <span class=mi>660</span>  <span class=mi>100</span>   <span class=mi>660</span>    <span class=mi>0</span>     <span class=mi>0</span>  <span class=mi>82038</span>      <span class=mi>0</span> <span class=o>--</span><span class=p>:</span><span class=o>--</span><span class=p>:</span><span class=o>--</span> <span class=o>--</span><span class=p>:</span><span class=o>--</span><span class=p>:</span><span class=o>--</span> <span class=o>--</span><span class=p>:</span><span class=o>--</span><span class=p>:</span><span class=o>--</span> <span class=mi>94285</span>
+</span></span><span class=line><span class=cl><span class=n>time_melookup</span><span class=p>:</span> <span class=mf>0.005</span>
+</span></span><span class=line><span class=cl><span class=n>time_connect</span><span class=p>:</span> <span class=mf>0.006</span>
+</span></span><span class=line><span class=cl><span class=n>time_appconnect</span><span class=p>:</span> <span class=mf>0.000</span>
+</span></span><span class=line><span class=cl><span class=n>time_redirect</span><span class=p>:</span> <span class=mf>0.000</span>
+</span></span><span class=line><span class=cl><span class=n>time_pretransfer</span><span class=p>:</span> <span class=mf>0.005</span>
+</span></span><span class=line><span class=cl><span class=n>time_starttransfer</span><span class=p>:</span> <span class=mf>0.008</span>
+</span></span><span class=line><span class=cl><span class=o>----------</span>
+</span></span><span class=line><span class=cl><span class=n>time_total</span><span class=p>:</span> <span class=mf>0.008</span>
+</span></span></code></pre></td></tr></table></div></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2023-12-27</span></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/%E8%A7%A3%E6%9E%90%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/index.md target=_blank>阅读原始文档</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="分享到 Twitter" data-sharer=twitter data-url=https://example.com/%E8%A7%A3%E6%9E%90%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/ data-title=coredns解析超时问题 data-hashtags><i class="fab fa-twitter fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="分享到 Facebook" data-sharer=facebook data-url=https://example.com/%E8%A7%A3%E6%9E%90%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/ data-hashtag><i class="fab fa-facebook-square fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="分享到 Hacker News" data-sharer=hackernews data-url=https://example.com/%E8%A7%A3%E6%9E%90%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/ data-title=coredns解析超时问题><i class="fab fa-hacker-news fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="分享到 Line" data-sharer=line data-url=https://example.com/%E8%A7%A3%E6%9E%90%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/ data-title=coredns解析超时问题><i data-svg-src=https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/line.svg aria-hidden=true></i></a><a href=javascript:void(0); title="分享到 微博" data-sharer=weibo data-url=https://example.com/%E8%A7%A3%E6%9E%90%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/ data-title=coredns解析超时问题 data-ralateuid=https://weibo.com/u/6047358891><i class="fab fa-weibo fa-fw" aria-hidden=true></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw" aria-hidden=true></i>&nbsp;<a href=/tags/>Tags</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/>主页</a></span></section></div><div class=post-nav><a href=/502%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/ class=prev rel=prev title="Nginx 502问题排查"><i class="fas fa-angle-left fa-fw" aria-hidden=true></i>Nginx 502问题排查</a>
+<a href=/426%E7%8A%B6%E6%80%81%E7%A0%81/ class=next rel=next title="istio 常见问题: 返回 426 状态码">istio 常见问题: 返回 426 状态码<i class="fas fa-angle-right fa-fw" aria-hidden=true></i></a></div></div><div id=comments><div id=valine class=comment></div><noscript>Please enable JavaScript to view the comments powered by <a href=https://valine.js.org/>Valine</a>.</noscript></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.121.1">Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden=true></i> LoveIt</a></div><div class=footer-line itemscope itemtype=http://schema.org/CreativeWork><i class="far fa-copyright fa-fw" aria-hidden=true></i><span itemprop=copyrightYear>2023</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://www.p-pp.cn target=_blank>董大轩</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span><span class=icp-splitter>&nbsp;|&nbsp;</span><br class=icp-br><span class=icp><a href=https://beian.miit.gov.cn/ target=_blank>豫ICP备19007804号-1</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw" aria-hidden=true></i>
+</a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw" aria-hidden=true></i></a></div><link rel=stylesheet href=/lib/valine/valine.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/css/lightgallery-bundle.min.css><script type=text/javascript src=https://cdn.jsdelivr.net/npm/valine@1.5.0/dist/Valine.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/algoliasearch@4.13.1/dist/algoliasearch-lite.umd.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/lightgallery.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/thumbnail/lg-thumbnail.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/zoom/lg-zoom.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:50},comment:{valine:{appId:"QGzwQXOqs5JOhN4RGPOkR2mR-MdYXbMMI",appKey:"WBmoGyJtbqUswvfLh6L8iEBr",avatar:"mp",el:"#valine",emojiCDN:"https://cdn.jsdelivr.net/npm/emoji-datasource-google@14.0.0/img/google/64/",emojiMaps:{100:"1f4af.png",alien:"1f47d.png",anger:"1f4a2.png",angry:"1f620.png",anguished:"1f627.png",astonished:"1f632.png",black_heart:"1f5a4.png",blue_heart:"1f499.png",blush:"1f60a.png",bomb:"1f4a3.png",boom:"1f4a5.png",broken_heart:"1f494.png",brown_heart:"1f90e.png",clown_face:"1f921.png",cold_face:"1f976.png",cold_sweat:"1f630.png",confounded:"1f616.png",confused:"1f615.png",cry:"1f622.png",crying_cat_face:"1f63f.png",cupid:"1f498.png",dash:"1f4a8.png",disappointed:"1f61e.png",disappointed_relieved:"1f625.png",dizzy:"1f4ab.png",dizzy_face:"1f635.png",drooling_face:"1f924.png",exploding_head:"1f92f.png",expressionless:"1f611.png",face_vomiting:"1f92e.png",face_with_cowboy_hat:"1f920.png",face_with_hand_over_mouth:"1f92d.png",face_with_head_bandage:"1f915.png",face_with_monocle:"1f9d0.png",face_with_raised_eyebrow:"1f928.png",face_with_rolling_eyes:"1f644.png",face_with_symbols_on_mouth:"1f92c.png",face_with_thermometer:"1f912.png",fearful:"1f628.png",flushed:"1f633.png",frowning:"1f626.png",ghost:"1f47b.png",gift_heart:"1f49d.png",green_heart:"1f49a.png",grimacing:"1f62c.png",grin:"1f601.png",grinning:"1f600.png",hankey:"1f4a9.png",hear_no_evil:"1f649.png",heart:"2764-fe0f.png",heart_decoration:"1f49f.png",heart_eyes:"1f60d.png",heart_eyes_cat:"1f63b.png",heartbeat:"1f493.png",heartpulse:"1f497.png",heavy_heart_exclamation_mark_ornament:"2763-fe0f.png",hole:"1f573-fe0f.png",hot_face:"1f975.png",hugging_face:"1f917.png",hushed:"1f62f.png",imp:"1f47f.png",innocent:"1f607.png",japanese_goblin:"1f47a.png",japanese_ogre:"1f479.png",joy:"1f602.png",joy_cat:"1f639.png",kiss:"1f48b.png",kissing:"1f617.png",kissing_cat:"1f63d.png",kissing_closed_eyes:"1f61a.png",kissing_heart:"1f618.png",kissing_smiling_eyes:"1f619.png",laughing:"1f606.png",left_speech_bubble:"1f5e8-fe0f.png",love_letter:"1f48c.png",lying_face:"1f925.png",mask:"1f637.png",money_mouth_face:"1f911.png",nauseated_face:"1f922.png",nerd_face:"1f913.png",neutral_face:"1f610.png",no_mouth:"1f636.png",open_mouth:"1f62e.png",orange_heart:"1f9e1.png",partying_face:"1f973.png",pensive:"1f614.png",persevere:"1f623.png",pleading_face:"1f97a.png",pouting_cat:"1f63e.png",purple_heart:"1f49c.png",rage:"1f621.png",relaxed:"263a-fe0f.png",relieved:"1f60c.png",revolving_hearts:"1f49e.png",right_anger_bubble:"1f5ef-fe0f.png",robot_face:"1f916.png",rolling_on_the_floor_laughing:"1f923.png",scream:"1f631.png",scream_cat:"1f640.png",see_no_evil:"1f648.png",shushing_face:"1f92b.png",skull:"1f480.png",skull_and_crossbones:"2620-fe0f.png",sleeping:"1f634.png",sleepy:"1f62a.png",slightly_frowning_face:"1f641.png",slightly_smiling_face:"1f642.png",smile:"1f604.png",smile_cat:"1f638.png",smiley:"1f603.png",smiley_cat:"1f63a.png",smiling_face_with_3_hearts:"1f970.png",smiling_imp:"1f608.png",smirk:"1f60f.png",smirk_cat:"1f63c.png",sneezing_face:"1f927.png",sob:"1f62d.png",space_invader:"1f47e.png",sparkling_heart:"1f496.png",speak_no_evil:"1f64a.png",speech_balloon:"1f4ac.png","star-struck":"1f929.png",stuck_out_tongue:"1f61b.png",stuck_out_tongue_closed_eyes:"1f61d.png",stuck_out_tongue_winking_eye:"1f61c.png",sunglasses:"1f60e.png",sweat:"1f613.png",sweat_drops:"1f4a6.png",sweat_smile:"1f605.png",thinking_face:"1f914.png",thought_balloon:"1f4ad.png",tired_face:"1f62b.png",triumph:"1f624.png",two_hearts:"1f495.png",unamused:"1f612.png",upside_down_face:"1f643.png",weary:"1f629.png",white_frowning_face:"2639-fe0f.png",white_heart:"1f90d.png",wink:"1f609.png",woozy_face:"1f974.png",worried:"1f61f.png",yawning_face:"1f971.png",yellow_heart:"1f49b.png",yum:"1f60b.png",zany_face:"1f92a.png",zipper_mouth_face:"1f910.png",zzz:"1f4a4.png"},enableQQ:!1,highlight:!0,lang:"zh-CN",pageSize:10,placeholder:"你的评论 ...",recordIP:!0,serverURLs:"https://leancloud.hugoloveit.com",visitor:!0}},lightgallery:!0,search:{algoliaAppID:"PASDMWALPK",algoliaIndex:"index.zh-cn",algoliaSearchKey:"b42948e51daaa93df92381c8e2ac0f93",highlightTag:"em",maxResultLength:10,noResultsFound:"没有找到结果",snippetLength:50,type:"algolia"}}</script><script type=text/javascript src=/js/theme.min.js></script></body></html>
