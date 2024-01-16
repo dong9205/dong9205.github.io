@@ -971,3 +971,8 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
   series = "series"
   tag = "tags"
   category = "categories"
+
+
+# 自定义广告单元
+[params.adsense]
+  client = "ca-pub-4408487258381412"
