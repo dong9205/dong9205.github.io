@@ -34,8 +34,8 @@ Istio 多集群网格有多种模型，在网络拓扑上分为扁平网络和�
 kind create cluster --name cluster01
 # kind默认在kubeconfig中生成的地址是https://127.0.0.1:xxxxx，需要把地址改为容器的IP地址，否则两个集群无法访问
 kubectl config set-cluster kind-cluster01 --server=https://$(docker inspect -f '{{.NetworkSettings.Networks.kind.IPAddress}}' cluster01-control-plane):6443
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.12/config/manifests/metallb-native.yaml
-cat <<EOF | kubectl create -f -
+kubectl --context kind-cluster01 apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.12/config/manifests/metallb-native.yaml
+cat <<EOF | kubectl --context kind-cluster01 create -f -
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
@@ -53,8 +53,9 @@ metadata:
 EOF
 
 kind create cluster --name cluster02
-kubectl config set-cluster kind-cluster02 --server=https://$(docker inspect -f '{{.NetworkSettings.Networks.kind.IPAddress}}' cluster02-control-plane):6443
-cat <<EOF | kubectl create -f -
+kubectl --context kind-cluster02 config set-cluster kind-cluster02 --server=https://$(docker inspect -f '{{.NetworkSettings.Networks.kind.IPAddress}}' cluster02-control-plane):6443
+kubectl --context kind-cluster02 apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.12/config/manifests/metallb-native.yaml
+cat <<EOF | kubectl create --context kind-cluster02 -f -
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
@@ -70,7 +71,7 @@ metadata:
   name: empty
   namespace: metallb-system
 EOF
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.12/config/manifests/metallb-native.yaml
+
 ```
 
 ### 配置信任关系
@@ -153,7 +154,109 @@ kubectl --context kind-cluster02 create secret generic cacerts -n istio-system \
 
 多集群扁平网络模型和单一集群的服务网格在访问方式上几乎没什么区别，但是需要注意不同集群的 Service IP 和 Pod 的 IP 不能重叠，否则会导致集群之间的服务发现出现问题，这也是扁平网络模型的一个缺点，需要提前规划好集群的网段。
 
+#### 将 cluster01 设为主集群
+```bash
+cat <<EOF > cluster01.yaml
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+spec:
+  meshConfig:
+    accessLogFile: /dev/stdout
+    accessLogEncoding: JSON
+    accessLogFormat: '{"authority":"%REQ(:AUTHORITY)%","bytes_received":"%BYTES_RECEIVED%","bytes_sent":"%BYTES_SENT%","downstream_local_address":"%DOWNSTREAM_LOCAL_ADDRESS%","downstream_remote_address":"%DOWNSTREAM_REMOTE_ADDRESS%","duration":"%DURATION%","istio_policy_status":"%DYNAMIC_METADATA(istio.mixer:status)%","method":"%REQ(:METHOD)%","path":"%REQ(X-ENVOY-ORIGINAL-PATH?:PATH)%","protocol":"%PROTOCOL%","request_id":"%REQ(X-REQUEST-ID)%","requested_server_name":"%REQUESTED_SERVER_NAME%","response_code":"%RESPONSE_CODE%","response_flags":"%RESPONSE_FLAGS%","route_name":"%ROUTE_NAME%","start_time":"%START_TIME%","trace_id":"%REQ(X-B3-TRACEID)%","upstream_cluster":"%UPSTREAM_CLUSTER%","upstream_host":"%UPSTREAM_HOST%","upstream_local_address":"%UPSTREAM_LOCAL_ADDRESS%","upstream_service_time":"%RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)%","upstream_transport_failure_reason":"%UPSTREAM_TRANSPORT_FAILURE_REASON%","user_agent":"%REQ(USER-AGENT)%","x_forwarded_for":"%REQ(X-FORWARDED-FOR)%"}'
+  values:
+    global:
+      meshID: mesh1
+      multiCluster:
+        clusterName: cluster01
+      network: network1
+      logAsJson: true
+EOF
+```
 
+`istioctl install --set values.pilot.env.EXTERNAL_ISTIOD=true --context="kind-cluster01" -f cluster01.yaml -y`
+
+需要注意的是，当 `values.pilot.env.EXTERNAL_ISTIOD` 被设置为 `true` 时， 安装在 `cluster01` 上的控制平面也可以作为其他从集群的外部控制平面。 当这个功能被启用时，`istiod` 将试图获得领导权锁，并因此管理将附加到它的并且带有 [适当注解的](https://istio.io/latest/zh/docs/tasks/security/cert-management/plugin-ca-cert/)从集群 （本例中为 `cluster02`）。
+
+#### 在 cluster01 安装东西向网关
+在 `cluster01` 中安装东西向流量专用网关，默认情况下，此网关将被公开到互联网上。 生产环境可能需要增加额外的准入限制（即：通过防火墙规则）来防止外部攻击。 咨询您的云供应商，了解可用的选项。
+
+`/root/istio-1.18.2/samples/multicluster/gen-eastwest-gateway.sh --mesh mesh1 --cluster cluster01 --network network1 | istioctl --context=kind-cluster01 install -y -f -`
+
+> 如果控制面已经安装了一个修订版，可在 gen-eastwest-gateway.sh 命令中添加 --revision rev 标志。
+
+等待东西向网关获取外部 IP 地址：
+
+```bash
+kubectl --context=kind-cluster01 get svc istio-eastwestgateway -n istio-system
+NAME                    TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                                                           AGE
+istio-eastwestgateway   LoadBalancer   10.96.164.163   172.18.11.1   15021:30169/TCP,15443:32267/TCP,15012:30328/TCP,15017:30664/TCP   2m7s
+```
+
+#### 在 `cluster01` 中开放控制平面
+在安装 `cluster02` 之前，我们需要开放 `cluster01` 的控制平面， 以便 `cluster02` 中的服务能访问到服务发现：
+
+`kubectl apply --context=kind-cluster01 -f /root/istio-1.18.2/samples/multicluster/expose-istiod.yaml`
+
+#### 设置集群 `cluster02` 的控制平面
+
+我们需要通过为 istio-system 命名空间添加注解来识别应管理集群 cluster02 的外部控制平面：
+
+```bash
+kubectl --context="kind-cluster02" annotate namespace istio-system topology.istio.io/controlPlaneClusters=cluster01
+
+```
+
+#### 将 `cluster02` 设为从集群
+
+保存 `cluster01` 东西向网关的地址。
+
+`export DISCOVERY_ADDRESS=$(kubectl --context="kind-cluster01" -n istio-system get svc istio-eastwestgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')`
+
+现在，为 `cluster02` 创建一个从集群配置：
+
+```bash
+cat <<EOF > cluster02.yaml
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+spec:
+  meshConfig:
+    accessLogFile: /dev/stdout
+    accessLogEncoding: JSON
+    accessLogFormat: '{"authority":"%REQ(:AUTHORITY)%","bytes_received":"%BYTES_RECEIVED%","bytes_sent":"%BYTES_SENT%","downstream_local_address":"%DOWNSTREAM_LOCAL_ADDRESS%","downstream_remote_address":"%DOWNSTREAM_REMOTE_ADDRESS%","duration":"%DURATION%","istio_policy_status":"%DYNAMIC_METADATA(istio.mixer:status)%","method":"%REQ(:METHOD)%","path":"%REQ(X-ENVOY-ORIGINAL-PATH?:PATH)%","protocol":"%PROTOCOL%","request_id":"%REQ(X-REQUEST-ID)%","requested_server_name":"%REQUESTED_SERVER_NAME%","response_code":"%RESPONSE_CODE%","response_flags":"%RESPONSE_FLAGS%","route_name":"%ROUTE_NAME%","start_time":"%START_TIME%","trace_id":"%REQ(X-B3-TRACEID)%","upstream_cluster":"%UPSTREAM_CLUSTER%","upstream_host":"%UPSTREAM_HOST%","upstream_local_address":"%UPSTREAM_LOCAL_ADDRESS%","upstream_service_time":"%RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)%","upstream_transport_failure_reason":"%UPSTREAM_TRANSPORT_FAILURE_REASON%","user_agent":"%REQ(USER-AGENT)%","x_forwarded_for":"%REQ(X-FORWARDED-FOR)%"}'
+  profile: remote
+  values:
+    global:
+      meshID: mesh1
+      multiCluster:
+        clusterName: cluster02
+      network: network1
+      remotePilotAddress: ${DISCOVERY_ADDRESS}
+      logAsJson: true
+EOF
+
+```
+
+为了便于演示，在这里我们使用 `injectionPath` 和 `remotePilotAddress` 参数配置控制平面的位置。 但在生产环境中，建议改为使用正确签名的 DNS 证书配置 `injectionURL` 参数， 类似于外部控制平面说明中的显示配置。
+
+将此配置应用到 `cluster02`：
+
+`istioctl install --context="kind-cluster02" -f cluster02.yaml -y`
+
+#### 附加 `cluster02` 作为 `cluster01` 的从集群
+为了将从集群连接到它的控制平面，我们让 `cluster01` 中的控制平面访问 `cluster02` 中的 API 服务器。 这将执行以下操作：
+
+* 使控制平面能够验证来自在 `cluster02` 中运行的工作负载的连接请求。 如果没有**API Server**访问权限，控制平面将拒绝请求。
+* 启用在 `cluster02` 中运行的服务端点发现。
+
+因为它已包含在 `topology.istio.io/controlPlaneClusters` 命名空间注解中 `cluster01` 上的控制平面也将：
+
+* 修补 `cluster02` 中 **Webhook** 中的证书。
+* 启动命名空间控制器，在 `cluster02` 的命名空间中写入 **ConfigMap**。
+
+为了能让 API 服务器访问 `cluster02`， 我们生成一个远程 **Secret** 并将其应用于 `cluster01`：
+
+`istioctl create-remote-secret --context="kind-cluster02" --name=cluster02 | kubectl apply -f - --context="kind-cluster01"`
 
 ### 扁平网络多控制面(多主架构)
 
@@ -304,10 +407,8 @@ kubectl create --context="kind-cluster02" namespace sample
 为命名空间 `sample` 开启 sidecar 自动注入：
 
 ```bash
-kubectl label --context="kind-cluster01" namespace sample \
-    istio-injection=enabled
-kubectl label --context="kind-cluster02" namespace sample \
-    istio-injection=enabled
+kubectl label --context="kind-cluster01" namespace sample istio-injection=enabled
+kubectl label --context="kind-cluster02" namespace sample istio-injection=enabled
 
 ```
 在每个集群中创建 `HelloWorld` 服务：
