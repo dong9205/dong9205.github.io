@@ -9,7 +9,9 @@ author: "Derrick"
 authorLink: "https://www.p-pp.cn/"
 summary: ""
 license: ""
-tags: [""]
+tags: 
+- vpn
+- process-monitor
 resources:
 - name: "featured-image"
   src: "核心进程被其他软件杀死.png"

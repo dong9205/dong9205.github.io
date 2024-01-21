@@ -9,7 +9,8 @@ author: "Derrick"
 authorLink: "https://www.p-pp.cn/"
 summary: ""
 license: ""
-tags: [""]
+tags: 
+- vpn
 resources:
 - name: "featured-image"
   src: ""
