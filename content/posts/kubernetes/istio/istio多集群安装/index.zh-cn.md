@@ -9,7 +9,9 @@ author: "Derrick"
 authorLink: "https://www.p-pp.cn/"
 summary: ""
 license: ""
-tags: [""]
+tags: 
+- kubernetes
+- istio
 resources:
 - name: "featured-image"
   src: ""
