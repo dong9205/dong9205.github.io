@@ -206,9 +206,15 @@ mv /etc/kubernetes/manifests/etcd.yaml ~/etcd.yaml && sleep 3 && mv ~/etcd.yaml 
 然后再次升级集群正常
 
 ## 参考文档
+
 etcdctl安装: https://github.com/etcd-io/etcd/releases/tag/v3.5.7
+
 etcd TLS: https://etcd.io/docs/v3.5/op-guide/security/
+
 cfssl生成证书: https://github.com/coreos/docs/blob/master/os/generate-self-signed-certificates.md
+
 cfssl仓库地址: https://github.com/cloudflare/cfssl.git
+
 节点更换IP: https://www.qikqiak.com/post/how-to-change-k8s-node-ip/
+
 
