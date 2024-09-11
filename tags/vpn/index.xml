@@ -1,1 +1,17 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Vpn - 标签 - 爱好知识分享与记录</title><link>https://example.com/tags/vpn/</link><description>Vpn - 标签 - 爱好知识分享与记录</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>920506213@qq.com (董大轩)</managingEditor><webMaster>920506213@qq.com (董大轩)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 21 Jan 2024 13:42:05 +0800</lastBuildDate><atom:link href="https://example.com/tags/vpn/" rel="self" type="application/rss+xml"/><item><title>链接已断开，核心进程被其他软件杀死</title><link>https://example.com/core_process_is_killed/</link><pubDate>Sun, 21 Jan 2024 13:42:05 +0800</pubDate><author>Derrick</author><guid>https://example.com/core_process_is_killed/</guid><description>greenvpn介绍 我平常用VPN比较少，所以找了免费的VPN使用，greenvpn的详细使用可以参考: greenvpn注册 连接报错: 链接已</description></item><item><title>GreenVPN注册</title><link>https://example.com/greenvpn-register/</link><pubDate>Sat, 20 Jan 2024 14:11:25 +0800</pubDate><author>Derrick</author><guid>https://example.com/greenvpn-register/</guid><description>GreenVPN注册 一、greenvpn下载 官网地址: GreenVPN - Free VPN Service | Free VPN Software 二、注册greenvpn新账户 2.1 获取临时邮箱 临时邮箱获取地址：更改电</description></item></channel></rss>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Vpn - 标签 - 爱好知识分享与记录</title><link>https://example.com/tags/vpn/</link><description>Vpn - 标签 - 爱好知识分享与记录</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>920506213@qq.com (董大轩)</managingEditor><webMaster>920506213@qq.com (董大轩)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 21 Jan 2024 13:42:05 +0800</lastBuildDate><atom:link href="https://example.com/tags/vpn/" rel="self" type="application/rss+xml"/><item><title>链接已断开，核心进程被其他软件杀死</title><link>https://example.com/core_process_is_killed/</link><pubDate>Sun, 21 Jan 2024 13:42:05 +0800</pubDate><author>Derrick</author><guid>https://example.com/core_process_is_killed/</guid><description><![CDATA[<h2 id="greenvpn介绍">greenvpn介绍</h2>
+<blockquote>
+<p>我平常用VPN比较少，所以找了免费的VPN使用，greenvpn的详细使用可以参考: <a href="../greenvpn-register#greenvpn-register" rel="">greenvpn注册</a></p>
+</blockquote>
+<h2 id="连接报错-链接已断开核心进程被其他软件杀死">连接报错: 链接已断开，核心进程被其他软件杀死</h2>
+<blockquote>
+<p>结论: 在使用greenvpn之前，使用了其他VPN或在默写情况下启用了加速器，需要先将其他虚拟网卡卸载，然后再尝试连接会让安装win10-tap-9.24.2，安装后然后即可正常连接</p>]]></description></item><item><title>GreenVPN注册</title><link>https://example.com/greenvpn-register/</link><pubDate>Sat, 20 Jan 2024 14:11:25 +0800</pubDate><author>Derrick</author><guid>https://example.com/greenvpn-register/</guid><description><![CDATA[<h1 id="greenvpn-register">GreenVPN注册</h1>
+<h1 id="一greenvpn下载">一、greenvpn下载</h1>
+<blockquote>
+<p>官网地址: <a href="https://www.greenvpn.app/" target="_blank" rel="noopener noreffer ">GreenVPN - Free VPN Service | Free VPN Software</a></p>
+</blockquote>
+<h1 id="二注册greenvpn新账户">二、注册greenvpn新账户</h1>
+<h2 id="21-获取临时邮箱">2.1 获取临时邮箱</h2>
+<blockquote>
+<p>临时邮箱获取地址：<a href="https://temp-mail.org/zh/change" target="_blank" rel="noopener noreffer ">更改电子邮件地址 - Temp Mail (temp-mail.org)</a></p>
+</blockquote>
+<p>打开页面后，复制邮件，然后点击刷新（会等待新邮件的发送）</p>]]></description></item></channel></rss>
