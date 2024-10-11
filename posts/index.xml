@@ -1,4 +1,15 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>所有文章 - 爱好知识分享与记录</title><link>https://example.com/posts/</link><description>所有文章 | 爱好知识分享与记录</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>920506213@qq.com (董大轩)</managingEditor><webMaster>920506213@qq.com (董大轩)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Wed, 11 Sep 2024 19:47:08 +0800</lastBuildDate><atom:link href="https://example.com/posts/" rel="self" type="application/rss+xml"/><item><title>Kubeadm高可用集群</title><link>https://example.com/kubeadm%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4/</link><pubDate>Thu, 30 Nov 2023 17:56:35 +0800</pubDate><author>Derrick</author><guid>https://example.com/kubeadm%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4/</guid><description>kubeadm 使用静态POD启动KeepAlived和Haproxy</description></item><item><title>gost配置反向代理隧道</title><link>https://example.com/gost/</link><pubDate>Wed, 11 Sep 2024 19:47:08 +0800</pubDate><author>Derrick</author><guid>https://example.com/gost/</guid><description><![CDATA[<h1 id="gost配置反向代理隧道">gost配置反向代理隧道</h1>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>所有文章 - 爱好知识分享与记录</title><link>https://example.com/posts/</link><description>所有文章 | 爱好知识分享与记录</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>920506213@qq.com (董大轩)</managingEditor><webMaster>920506213@qq.com (董大轩)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Fri, 11 Oct 2024 20:52:22 +0800</lastBuildDate><atom:link href="https://example.com/posts/" rel="self" type="application/rss+xml"/><item><title>Kubeadm高可用集群</title><link>https://example.com/kubeadm%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4/</link><pubDate>Thu, 30 Nov 2023 17:56:35 +0800</pubDate><author>Derrick</author><guid>https://example.com/kubeadm%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4/</guid><description>kubeadm 使用静态POD启动KeepAlived和Haproxy</description></item><item><title>单点登录报错记录</title><link>https://example.com/ssoerror/</link><pubDate>Fri, 11 Oct 2024 20:52:22 +0800</pubDate><author>Derrick</author><guid>https://example.com/ssoerror/</guid><description><![CDATA[<h1 id="saml登录异常错误记录">SAML登录异常错误记录</h1>
+<h2 id="missing-signature-referencing-the-top-level-element">Missing signature referencing the top-level element</h2>
+<h3 id="原因">原因</h3>
+<p>使用的Google的Saml协议接入单点登录, 后端配置了验证，需要勾选&quot;<strong>已签署响应复选框</strong>&quot;</p>
+<h3 id="排查细节">排查细节</h3>
+<ol>
+<li>首先通过报错发现了具体的错误函数，发现是通过调用了goxmldsig.NewDefaultValidationContext创建的ValidationContext结构体ctx,然后ctx的Validate函数的报错</li>
+<li>继续Debug，发现是findSignature下sig的结果为空，导致返回报错&quot;Missing signature referencing the top-level element&quot;</li>
+<li>sig为空的原因是&quot;idAttr&quot;和&quot;ref.URI&quot;的不相同.</li>
+<li>然后找到其他正常的请求发现XML里边有ds:Signature字段，但是Google的saml返回结果里边没有这个字段</li>
+<li>然后在平台上找到&quot;<strong>已签署响应复选框</strong>&ldquo;选项</li>
+</ol>]]></description></item><item><title>gost配置反向代理隧道</title><link>https://example.com/gost/</link><pubDate>Wed, 11 Sep 2024 19:47:08 +0800</pubDate><author>Derrick</author><guid>https://example.com/gost/</guid><description><![CDATA[<h1 id="gost配置反向代理隧道">gost配置反向代理隧道</h1>
 <h2 id="初始化">初始化</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -510,8 +521,4 @@
 </div>
 </div><h2 id="karmada-kubectl-插件">Karmada kubectl 插件</h2>
 <blockquote>
-<p>kubectl-krew: <a href="https://krew.sigs.k8s.io/" target="_blank" rel="noopener noreffer ">https://krew.sigs.k8s.io/</a></p>]]></description></item><item><title>使用 WebAssembly 对 Istio 进行扩展</title><link>https://example.com/2.wasm-istio/</link><pubDate>Fri, 26 Jan 2024 16:27:41 +0800</pubDate><author>Derrick</author><guid>https://example.com/2.wasm-istio/</guid><description><![CDATA[<h1 id="使用-webassembly-对-istio-进行扩展">使用 WebAssembly 对 Istio 进行扩展</h1>
-<h2 id="proxy-wasm">Proxy-Wasm</h2>
-<p>编写 WASM 的工具有 Solo.io 团队的 <code>wasme</code>、<code>tinygo</code>等，目前应用比较多是 <code>tinygo</code>，<code>tinygo</code> 支持的包可以查看 <a href="https://tinygo.org/docs/reference/lang-support/stdlib/" target="_blank" rel="noopener noreffer ">https://tinygo.org/docs/reference/lang-support/stdlib/</a> 进行了解。</p>
-<blockquote>
-<p>TinyGo 是 Go 编程语言规范的一个编译器实现，为什么不使用官方的 Go 编译器？目前官方编译器无法生成可以在浏览器外部运行的 WASM 二进制文件，因此也无法生成与 Proxy-Wasm 兼容的二进制文件。</p>]]></description></item></channel></rss>
+<p>kubectl-krew: <a href="https://krew.sigs.k8s.io/" target="_blank" rel="noopener noreffer ">https://krew.sigs.k8s.io/</a></p>]]></description></item></channel></rss>
