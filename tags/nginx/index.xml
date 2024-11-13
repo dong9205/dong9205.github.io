@@ -1,68 +1,66 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Nginx - 标签 - 爱好知识分享与记录</title><link>https://example.com/tags/nginx/</link><description>Nginx - 标签 - 爱好知识分享与记录</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>920506213@qq.com (董大轩)</managingEditor><webMaster>920506213@qq.com (董大轩)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Tue, 19 Dec 2023 14:47:54 +0800</lastBuildDate><atom:link href="https://example.com/tags/nginx/" rel="self" type="application/rss+xml"/><item><title>Nginx 502问题排查</title><link>https://example.com/502%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/</link><pubDate>Tue, 19 Dec 2023 14:47:54 +0800</pubDate><author>Derrick</author><guid>https://example.com/502%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/</guid><description><![CDATA[<h1 id="nginx-502问题排查">Nginx 502问题排查</h1>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Nginx - 标签 - 爱好知识分享与记录</title><link>https://example.com/tags/nginx/</link><description>Nginx - 标签 - 爱好知识分享与记录</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Tue, 19 Dec 2023 14:47:54 +0800</lastBuildDate><atom:link href="https://example.com/tags/nginx/" rel="self" type="application/rss+xml"/><item><title>Nginx 502问题排查</title><link>https://example.com/502%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/</link><pubDate>Tue, 19 Dec 2023 14:47:54 +0800</pubDate><author>Derrick</author><guid>https://example.com/502%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/</guid><description><![CDATA[<h1 id="nginx-502问题排查">Nginx 502问题排查</h1>
 <h2 id="nginx快速定位异常">nginx快速定位异常</h2>
 <table>
   <thead>
       <tr>
-          <th style="text-align: left">错误信息</th>
-          <th style="text-align: left">错误说明</th>
+          <th>错误信息</th>
+          <th>错误说明</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td style="text-align: left">&ldquo;upstream prematurely（过早的） closed connection&rdquo;</td>
-          <td style="text-align: left">请求uri的时候出现的异常，是由于upstream还未返回应答给用户时用户断掉连接造成的，对系统没有影响，可以忽略</td>
+          <td>&ldquo;upstream prematurely（过早的） closed connection&rdquo;</td>
+          <td>请求uri的时候出现的异常，是由于upstream还未返回应答给用户时用户断掉连接造成的，对系统没有影响，可以忽略</td>
       </tr>
       <tr>
-          <td style="text-align: left">&ldquo;recv() failed (104: Connection reset by peer)&rdquo;</td>
-          <td style="text-align: left">（1）服务器的并发连接数超过了其承载量，服务器会将其中一些连接Down掉； （2）客户关掉了浏览器，而服务器还在给客户端发送数据； （3）浏览器端按了Stop</td>
+          <td>&ldquo;recv() failed (104: Connection reset by peer)&rdquo;</td>
+          <td>（1）服务器的并发连接数超过了其承载量，服务器会将其中一些连接Down掉； （2）客户关掉了浏览器，而服务器还在给客户端发送数据； （3）浏览器端按了Stop</td>
       </tr>
       <tr>
-          <td style="text-align: left">&ldquo;(111: Connection refused) while connecting to upstream&rdquo;</td>
-          <td style="text-align: left">用户在连接时，若遇到后端upstream挂掉或者不通，会收到该错误</td>
+          <td>&ldquo;(111: Connection refused) while connecting to upstream&rdquo;</td>
+          <td>用户在连接时，若遇到后端upstream挂掉或者不通，会收到该错误</td>
       </tr>
       <tr>
-          <td style="text-align: left">&ldquo;(111: Connection refused) while reading response header from upstream&rdquo;</td>
-          <td style="text-align: left">用户在连接成功后读取数据时，若遇到后端upstrream挂掉或者不通，会收到该错误</td>
+          <td>&ldquo;(111: Connection refused) while reading response header from upstream&rdquo;</td>
+          <td>用户在连接成功后读取数据时，若遇到后端upstrream挂掉或者不通，会收到该错误</td>
       </tr>
       <tr>
-          <td style="text-align: left">&ldquo;(111: Connection refused) while sending request to upstream&rdquo;</td>
-          <td style="text-align: left">Nginx和upstream连接成功后发送数据时，若遇到后端upstream挂掉或者不通，会收到该错误</td>
+          <td>&ldquo;(111: Connection refused) while sending request to upstream&rdquo;</td>
+          <td>Nginx和upstream连接成功后发送数据时，若遇到后端upstream挂掉或者不通，会收到该错误</td>
       </tr>
       <tr>
-          <td style="text-align: left">&ldquo;(110: Connection timed out) while connecting to upstream&rdquo;</td>
-          <td style="text-align: left">nginx连接后面的upstream时超时</td>
+          <td>&ldquo;(110: Connection timed out) while connecting to upstream&rdquo;</td>
+          <td>nginx连接后面的upstream时超时</td>
       </tr>
       <tr>
-          <td style="text-align: left">&ldquo;(110: Connection timed out) while reading upstream&rdquo;</td>
-          <td style="text-align: left">nginx读取来自upstream的响应时超时</td>
+          <td>&ldquo;(110: Connection timed out) while reading upstream&rdquo;</td>
+          <td>nginx读取来自upstream的响应时超时</td>
       </tr>
       <tr>
-          <td style="text-align: left">&ldquo;(110: Connection timed out) while reading response</td>
-          <td style="text-align: left">header from upstream&rdquo;	nginx读取来自upstream的响应头时超时</td>
+          <td>&ldquo;(110: Connection timed out) while reading response</td>
+          <td>header from upstream&rdquo;	nginx读取来自upstream的响应头时超时</td>
       </tr>
       <tr>
-          <td style="text-align: left">&ldquo;(110: Connection timed out) while reading upstream&rdquo;</td>
-          <td style="text-align: left">nginx读取来自upstream的响应时超时</td>
+          <td>&ldquo;(110: Connection timed out) while reading upstream&rdquo;</td>
+          <td>nginx读取来自upstream的响应时超时</td>
       </tr>
       <tr>
-          <td style="text-align: left">&ldquo;(104: Connection reset by peer) while connecting to upstream&rdquo;</td>
-          <td style="text-align: left">upstream发送了RST，将连接重置</td>
+          <td>&ldquo;(104: Connection reset by peer) while connecting to upstream&rdquo;</td>
+          <td>upstream发送了RST，将连接重置</td>
       </tr>
       <tr>
-          <td style="text-align: left">&ldquo;upstream sent invalid header while reading response header from upstream&rdquo;</td>
-          <td style="text-align: left">upstream发送的响应头无效</td>
+          <td>&ldquo;upstream sent invalid header while reading response header from upstream&rdquo;</td>
+          <td>upstream发送的响应头无效</td>
       </tr>
       <tr>
-          <td style="text-align: left">&ldquo;upstream sent no valid HTTP/1.0 header while reading response header from upstream&rdquo;</td>
-          <td style="text-align: left">upstream发送的响应头无效</td>
+          <td>&ldquo;upstream sent no valid HTTP/1.0 header while reading response header from upstream&rdquo;</td>
+          <td>upstream发送的响应头无效</td>
       </tr>
       <tr>
-          <td style="text-align: left">&ldquo;client intended to send too large body&rdquo;</td>
-          <td style="text-align: left">用于设置允许接受的客户端请求内容的最大值，默认值是1M，client发送的body超过了设置值</td>
+          <td>&ldquo;client intended to send too large body&rdquo;</td>
+          <td>用于设置允许接受的客户端请求内容的最大值，默认值是1M，client发送的body超过了设置值</td>
       </tr>
   </tbody>
 </table>
-<h2 id="nginx日志状态码为502">Nginx日志状态码为502</h2>
-<h3 id="负载均衡实例连接数超限connection-reset-by-peer">负载均衡实例连接数超限(Connection reset by peer)</h3>
-<blockquote>
-<p>报错: recv() failed (104: Connection reset by peer) while reading response header from upstream</p>]]></description></item></channel></rss>
+<h2 id="nginx日志没有记录请求客户端报错eof-或-connection-reset-by-peer">Nginx日志没有记录请求，客户端报错EOF 或 Connection reset by peer</h2>
+<p></p>]]></description></item></channel></rss>

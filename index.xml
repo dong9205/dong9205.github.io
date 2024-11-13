@@ -1,4 +1,69 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>爱好知识分享与记录</title><link>https://example.com/</link><description>Derrick的个人博客</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>920506213@qq.com (董大轩)</managingEditor><webMaster>920506213@qq.com (董大轩)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Fri, 11 Oct 2024 20:52:22 +0800</lastBuildDate><atom:link href="https://example.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Kubeadm高可用集群</title><link>https://example.com/kubeadm%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4/</link><pubDate>Thu, 30 Nov 2023 17:56:35 +0800</pubDate><author>Derrick</author><guid>https://example.com/kubeadm%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4/</guid><description>kubeadm 使用静态POD启动KeepAlived和Haproxy</description></item><item><title>单点登录报错记录</title><link>https://example.com/ssoerror/</link><pubDate>Fri, 11 Oct 2024 20:52:22 +0800</pubDate><author>Derrick</author><guid>https://example.com/ssoerror/</guid><description><![CDATA[<h1 id="saml登录异常错误记录">SAML登录异常错误记录</h1>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>爱好知识分享与记录</title><link>https://example.com/</link><description>Derrick的个人博客</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Mon, 11 Nov 2024 11:25:57 +0800</lastBuildDate><atom:link href="https://example.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Kubeadm高可用集群</title><link>https://example.com/kubeadm%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4/</link><pubDate>Thu, 30 Nov 2023 17:56:35 +0800</pubDate><author>Derrick</author><guid>https://example.com/kubeadm%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4/</guid><description>kubeadm 使用静态POD启动KeepAlived和Haproxy</description></item><item><title>Go 多版本管理工具</title><link>https://example.com/versionmanager/</link><pubDate>Mon, 11 Nov 2024 11:25:57 +0800</pubDate><author>Derrick</author><guid>https://example.com/versionmanager/</guid><description><![CDATA[<blockquote>
+<p>本文由 <a href="http://ksria.com/simpread/" target="_blank" rel="noopener noreffer ">简悦 SimpRead</a> 转码， 原文地址 <a href="https://blog.csdn.net/weixin_44621343/article/details/133148154" target="_blank" rel="noopener noreffer ">blog.csdn.net</a></p>
+</blockquote>
+<h2 id="go-多版本管理工具httpssocsdnnetsosearchqe78988e69cace7aea1e79086e5b7a5e585b7spm1001210130017020">Go 多<a href="https://so.csdn.net/so/search?q=%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7&amp;spm=1001.2101.3001.7020" target="_blank" rel="noopener noreffer ">版本管理工具</a></h2>
+<h4 id="文章目录">文章目录</h4>
+<ul>
+<li><a href="#Go__1" rel="">Go 多版本管理工具</a></li>
+<li>
+<ul>
+<li><a href="#go_get__6" rel="">一、go get 命令</a></li>
+<li>
+<ul>
+<li><a href="#11__10" rel="">1.1 使用方法：</a></li>
+</ul>
+</li>
+<li><a href="#Goenv_34" rel="">二、Goenv</a></li>
+<li><a href="#GVM_Go_Version_Manager_66" rel="">三、GVM (Go Version Manager)</a></li>
+<li><a href="#voidintg_90" rel="">四、voidint/g</a></li>
+<li>
+<ul>
+<li><a href="#41__92" rel="">4.1 安装</a></li>
+<li><a href="#42__111" rel="">4.2 冲突</a></li>
+<li><a href="#43__136" rel="">4.3 使用</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>在平时开发中，本地新旧项目并行开发的过程中，你大概率会遇到一个令人头疼的问题，如何同时使用两个不同版本的 Golang Runtime 进行开发呢？</p>]]></description></item><item><title>CH+Vector打造最强Grafana日志分析</title><link>https://example.com/ch_vector%E6%89%93%E9%80%A0%E6%9C%80%E5%BC%BAgrafana%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90/</link><pubDate>Wed, 06 Nov 2024 15:16:51 +0800</pubDate><author>Derrick</author><guid>https://example.com/ch_vector%E6%89%93%E9%80%A0%E6%9C%80%E5%BC%BAgrafana%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90/</guid><description><![CDATA[<h1 id="介绍">介绍</h1>
+<h2 id="nginx">Nginx</h2>
+<h3 id="安装">安装</h3>
+<blockquote>
+<p>官方文档: <a href="https://nginx.org/en/linux_packages.html#Ubuntu" target="_blank" rel="noopener noreffer ">https://nginx.org/en/linux_packages.html#Ubuntu</a></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt install curl gnupg2 ca-certificates lsb-release ubuntu-keyring
+</span></span><span class="line"><span class="cl">curl https://nginx.org/keys/nginx_signing.key <span class="p">|</span> gpg --dearmor <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    <span class="p">|</span> sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg &gt;/dev/null
+</span></span><span class="line"><span class="cl">gpg --dry-run --quiet --no-keyring --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
+</span></span></span><span class="line"><span class="cl"><span class="s2">http://nginx.org/packages/ubuntu `lsb_release -cs` nginx&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    <span class="p">|</span> sudo tee /etc/apt/sources.list.d/nginx.list
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> -e <span class="s2">&#34;Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    <span class="p">|</span> sudo tee /etc/apt/preferences.d/99nginx
+</span></span><span class="line"><span class="cl">sudo apt update
+</span></span><span class="line"><span class="cl">sudo apt install nginx -y
+</span></span><span class="line"><span class="cl">systemctl start nginx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="配置nginx">配置Nginx</h3>
+<p>编辑nginx.conf，增加以下配置</p>]]></description></item><item><title>单点登录报错记录</title><link>https://example.com/ssoerror/</link><pubDate>Fri, 11 Oct 2024 20:52:22 +0800</pubDate><author>Derrick</author><guid>https://example.com/ssoerror/</guid><description><![CDATA[<h1 id="saml登录异常错误记录">SAML登录异常错误记录</h1>
 <h2 id="missing-signature-referencing-the-top-level-element">Missing signature referencing the top-level element</h2>
 <h3 id="原因">原因</h3>
 <p>使用的Google的Saml协议接入单点登录, 后端配置了验证，需要勾选&quot;<strong>已签署响应复选框</strong>&quot;</p>
@@ -317,21 +382,21 @@
 <table>
   <thead>
       <tr>
-          <th style="text-align: left">域名</th>
-          <th style="text-align: left">类型</th>
-          <th style="text-align: left">地址</th>
+          <th>域名</th>
+          <th>类型</th>
+          <th>地址</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td style="text-align: left">gost.p-pp.cn</td>
-          <td style="text-align: left">CNAME</td>
-          <td style="text-align: left">host02.p-pp.cn</td>
+          <td>gost.p-pp.cn</td>
+          <td>CNAME</td>
+          <td>host02.p-pp.cn</td>
       </tr>
       <tr>
-          <td style="text-align: left">*.gost.p-pp.cn</td>
-          <td style="text-align: left">CNAME</td>
-          <td style="text-align: left">host02.p-pp.cn</td>
+          <td>*.gost.p-pp.cn</td>
+          <td>CNAME</td>
+          <td>host02.p-pp.cn</td>
       </tr>
   </tbody>
 </table>
@@ -455,70 +520,4 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h1 id="参考连接">参考连接</h1>
-<p><a href="https://github.com/dbcli/mycli/issues/753#issuecomment-504279817" target="_blank" rel="noopener noreffer ">https://github.com/dbcli/mycli/issues/753#issuecomment-504279817</a></p>]]></description></item><item><title>React Antd ProTable滚动更新</title><link>https://example.com/protable%E6%BB%9A%E5%8A%A8%E6%9B%B4%E6%96%B0/</link><pubDate>Thu, 11 Apr 2024 13:12:40 +0800</pubDate><author>Derrick</author><guid>https://example.com/protable%E6%BB%9A%E5%8A%A8%E6%9B%B4%E6%96%B0/</guid><description><![CDATA[<h1 id="react-antd-protable-expandableexpandedrowrender支持滚动更新">React Antd ProTable expandable.expandedRowRender支持滚动更新</h1>
-<h2 id="需求介绍">需求介绍</h2>
-<p>报警平台需要展示各个报警的事件，相同的报警标题会被聚合在一起，但是会记录每次报警内容作为事件展示，有时候出现几百万次报警，导致前端加载缓慢，所以考虑报警事件使用滚动加载的方式获取</p>]]></description></item><item><title>部署k8s多集群管理利器Karmada</title><link>https://example.com/01%E9%83%A8%E7%BD%B2k8s%E5%A4%9A%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%88%A9%E5%99%A8karmada/</link><pubDate>Mon, 19 Feb 2024 14:54:29 +0800</pubDate><author>Derrick</author><guid>https://example.com/01%E9%83%A8%E7%BD%B2k8s%E5%A4%9A%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%88%A9%E5%99%A8karmada/</guid><description><![CDATA[<h1 id="部署k8s多集群管理利器karmada">部署k8s多集群管理利器Karmada</h1>
-<h2 id="创建两个kubernetes集群">创建两个kubernetes集群</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat <span class="s">&lt;&lt;EOF &gt; cluster01-kind.yaml
-</span></span></span><span class="line"><span class="cl"><span class="s">kind: Cluster
-</span></span></span><span class="line"><span class="cl"><span class="s">apiVersion: kind.x-k8s.io/v1alpha4
-</span></span></span><span class="line"><span class="cl"><span class="s">name: cluster01
-</span></span></span><span class="line"><span class="cl"><span class="s">nodes:
-</span></span></span><span class="line"><span class="cl"><span class="s">- role: control-plane
-</span></span></span><span class="line"><span class="cl"><span class="s">networking:
-</span></span></span><span class="line"><span class="cl"><span class="s">  podSubnet: &#34;10.10.0.0/16&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">  serviceSubnet: &#34;10.11.0.0/16&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">kind create cluster --config  cluster01-kind.yaml
-</span></span><span class="line"><span class="cl">kubectl config set-cluster kind-cluster01 --server<span class="o">=</span>https://<span class="k">$(</span>docker inspect -f <span class="s1">&#39;{{.NetworkSettings.Networks.kind.IPAddress}}&#39;</span> cluster01-control-plane<span class="k">)</span>:6443
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">cat <span class="s">&lt;&lt;EOF &gt; cluster02-kind.yaml
-</span></span></span><span class="line"><span class="cl"><span class="s">kind: Cluster
-</span></span></span><span class="line"><span class="cl"><span class="s">apiVersion: kind.x-k8s.io/v1alpha4
-</span></span></span><span class="line"><span class="cl"><span class="s">name: cluster02
-</span></span></span><span class="line"><span class="cl"><span class="s">nodes:
-</span></span></span><span class="line"><span class="cl"><span class="s">- role: control-plane
-</span></span></span><span class="line"><span class="cl"><span class="s">networking:
-</span></span></span><span class="line"><span class="cl"><span class="s">  podSubnet: &#34;10.20.0.0/16&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">  serviceSubnet: &#34;10.21.0.0/16&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">kind create cluster --config  cluster02-kind.yaml
-</span></span><span class="line"><span class="cl">kubectl config set-cluster kind-cluster02 --server<span class="o">=</span>https://<span class="k">$(</span>docker inspect -f <span class="s1">&#39;{{.NetworkSettings.Networks.kind.IPAddress}}&#39;</span> cluster02-control-plane<span class="k">)</span>:6443
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="karmada-kubectl-插件">Karmada kubectl 插件</h2>
-<blockquote>
-<p>kubectl-krew: <a href="https://krew.sigs.k8s.io/" target="_blank" rel="noopener noreffer ">https://krew.sigs.k8s.io/</a></p>]]></description></item></channel></rss>
+<p><a href="https://github.com/dbcli/mycli/issues/753#issuecomment-504279817" target="_blank" rel="noopener noreffer ">https://github.com/dbcli/mycli/issues/753#issuecomment-504279817</a></p>]]></description></item></channel></rss>

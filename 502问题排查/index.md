@@ -21,6 +21,11 @@
 |"upstream sent no valid HTTP/1.0 header while reading response header from upstream"	| upstream发送的响应头无效| 
 |"client intended to send too large body"	| 用于设置允许接受的客户端请求内容的最大值，默认值是1M，client发送的body超过了设置值| 
 
+## Nginx日志没有记录请求，客户端报错EOF 或 Connection reset by peer
+
+![nat和多SLB引发的问题](./nat和多SLB引发的问题.png)
+
+
 ## Nginx日志状态码为502
 
 ### 负载均衡实例连接数超限(Connection reset by peer)

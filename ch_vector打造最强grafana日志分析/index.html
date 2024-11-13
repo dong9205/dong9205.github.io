@@ -1,0 +1,640 @@
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>CH+Vector打造最强Grafana日志分析 - 爱好知识分享与记录</title><meta name=Description content="Derrick的个人博客"><meta property="og:url" content="https://example.com/ch_vector%E6%89%93%E9%80%A0%E6%9C%80%E5%BC%BAgrafana%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90/">
+<meta property="og:site_name" content="爱好知识分享与记录"><meta property="og:title" content="CH+Vector打造最强Grafana日志分析"><meta property="og:description" content='介绍 Nginx 安装 官方文档: https://nginx.org/en/linux_packages.html#Ubuntu
+1 2 3 4 5 6 7 8 9 10 11 12 sudo apt install curl gnupg2 ca-certificates lsb-release ubuntu-keyring curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \ | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null gpg --dry-run --quiet --no-keyring --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \ http://nginx.org/packages/ubuntu `lsb_release -cs` nginx" \ | sudo tee /etc/apt/sources.list.d/nginx.list echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" \ | sudo tee /etc/apt/preferences.d/99nginx sudo apt update sudo apt install nginx -y systemctl start nginx 配置Nginx 编辑nginx.conf，增加以下配置'><meta property="og:locale" content="zh_CN"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2024-11-06T15:16:51+08:00"><meta property="article:modified_time" content="2024-11-06T15:16:51+08:00"><meta property="og:image" content="https://example.com/logo.png"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://example.com/logo.png"><meta name=twitter:title content="CH+Vector打造最强Grafana日志分析"><meta name=twitter:description content='介绍 Nginx 安装 官方文档: https://nginx.org/en/linux_packages.html#Ubuntu
+1 2 3 4 5 6 7 8 9 10 11 12 sudo apt install curl gnupg2 ca-certificates lsb-release ubuntu-keyring curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \ | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null gpg --dry-run --quiet --no-keyring --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \ http://nginx.org/packages/ubuntu `lsb_release -cs` nginx" \ | sudo tee /etc/apt/sources.list.d/nginx.list echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" \ | sudo tee /etc/apt/preferences.d/99nginx sudo apt update sudo apt install nginx -y systemctl start nginx 配置Nginx 编辑nginx.conf，增加以下配置'><meta name=application-name content="爱好知识分享与记录"><meta name=apple-mobile-web-app-title content="爱好知识分享与记录"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://example.com/ch_vector%E6%89%93%E9%80%A0%E6%9C%80%E5%BC%BAgrafana%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90/><link rel=prev href=https://example.com/ssoerror/><link rel=next href=https://example.com/versionmanager/><link rel=stylesheet href=/css/style.min.css><link rel=preload href=https://fastly.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=https://fastly.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css></noscript><link rel=preload href=https://fastly.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=https://fastly.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css></noscript><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4408487258381412" crossorigin=anonymous></script><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"CH+Vector打造最强Grafana日志分析","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/example.com\/ch_vector%E6%89%93%E9%80%A0%E6%9C%80%E5%BC%BAgrafana%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90\/"},"image":["https:\/\/example.com\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"","wordcount":1607,"url":"https:\/\/example.com\/ch_vector%E6%89%93%E9%80%A0%E6%9C%80%E5%BC%BAgrafana%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90\/","datePublished":"2024-11-06T15:16:51+08:00","dateModified":"2024-11-06T15:16:51+08:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"xxxx","logo":"https:\/\/example.com\/images\/avatar.jpg"},"author":{"@type":"Person","name":"Derrick"},"description":""}</script></head><body data-header-desktop=fixed data-header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title=爱好知识分享与记录><span class=header-title-pre><i class='far fa-kiss-wink-heart fa-fw' aria-hidden=true></i></span>爱好知识分享与记录</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>所有文章 </a><a class=menu-item href=/tags/>标签 </a><a class=menu-item href=/categories/>分类 </a><a class=menu-item href=/categories/documentation/>文档 </a><a class=menu-item href=/about/>关于 </a><a class=menu-item href=https://github.com/dong9205/dong9205.github.io.git title=GitHub rel="noopener noreffer" target=_blank><i class='fab fa-github fa-fw' aria-hidden=true></i> </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=搜索><i class="fas fa-search fa-fw" aria-hidden=true></i>
+</a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=清空><i class="fas fa-times-circle fa-fw" aria-hidden=true></i>
+</a><span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin" aria-hidden=true></i>
+</span></span><a href=javascript:void(0); class="menu-item theme-switch" title><i class="fas fa-adjust fa-fw" aria-hidden=true></i>
+</a><a href=javascript:void(0); class="menu-item language" title><i class="fa fa-globe" aria-hidden=true></i>
+<select class=language-select id=language-select-desktop onchange="location=this.value"><option value=/ch_vector%E6%89%93%E9%80%A0%E6%9C%80%E5%BC%BAgrafana%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90/ selected>简体中文</option></select></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title=爱好知识分享与记录><span class=header-title-pre><i class='far fa-kiss-wink-heart fa-fw' aria-hidden=true></i></span>爱好知识分享与记录</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=搜索><i class="fas fa-search fa-fw" aria-hidden=true></i>
+</a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=清空><i class="fas fa-times-circle fa-fw" aria-hidden=true></i>
+</a><span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin" aria-hidden=true></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>取消</a></div><a class=menu-item href=/posts/ title>所有文章</a><a class=menu-item href=/tags/ title>标签</a><a class=menu-item href=/categories/ title>分类</a><a class=menu-item href=/categories/documentation/ title>文档</a><a class=menu-item href=/about/ title>关于</a><a class=menu-item href=https://github.com/dong9205/dong9205.github.io.git title=GitHub rel="noopener noreffer" target=_blank><i class='fab fa-github fa-fw' aria-hidden=true></i></a><a href=javascript:void(0); class="menu-item theme-switch" title>
+<i class="fas fa-adjust fa-fw" aria-hidden=true></i>
+</a><a href=javascript:void(0); class=menu-item title><i class="fa fa-globe fa-fw" aria-hidden=true></i>
+<select class=language-select onchange="location=this.value"><option value=/ch_vector%E6%89%93%E9%80%A0%E6%9C%80%E5%BC%BAgrafana%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90/ selected>简体中文</option></select></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">CH+Vector打造最强Grafana日志分析</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=https://www.p-pp.cn/ title=Author target=_blank rel="noopener noreffer author" class=author><i class="fas fa-user-circle fa-fw" aria-hidden=true></i>Derrick</a></span>&nbsp;<span class=post-category>收录于 <a href=/categories/documentation/><i class="far fa-folder fa-fw" aria-hidden=true></i>文档</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw" aria-hidden=true></i>&nbsp;<time datetime=2024-11-06>2024-11-06</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden=true></i>&nbsp;约 1607 字&nbsp;
+<i class="far fa-clock fa-fw" aria-hidden=true></i>&nbsp;预计阅读 4 分钟&nbsp;<span id=/ch_vector%E6%89%93%E9%80%A0%E6%9C%80%E5%BC%BAgrafana%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90/ class=leancloud_visitors data-flag-title=CH+Vector打造最强Grafana日志分析>
+<i class="far fa-eye fa-fw" aria-hidden=true></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;次阅读
+</span>&nbsp;</div></div><div class="details toc" id=toc-static data-kept><div class="details-summary toc-title"><span>目录</span>
+<span><i class="details-icon fas fa-angle-right" aria-hidden=true></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#nginx>Nginx</a><ul><li><a href=#安装>安装</a></li><li><a href=#配置nginx>配置Nginx</a></li><li><a href=#重载配置>重载配置</a></li></ul></li><li><a href=#安装docker>安装Docker</a></li><li><a href=#clickhouse>Clickhouse</a><ul><li><a href=#创建部署目录和docker-composeyaml>创建部署目录和docker-compose.yaml</a></li><li><a href=#配置主文件>配置主文件</a></li><li><a href=#配置用户文件>配置用户文件</a></li><li><a href=#启动>启动</a></li><li><a href=#创建数据库与表>创建数据库与表</a><ul><li><a href=#进入ck数据库>进入ck数据库</a></li><li><a href=#执行创建语句>执行创建语句</a></li></ul></li></ul></li><li><a href=#部署vector采集日志>部署Vector采集日志</a><ul><li><a href=#vector部署>Vector部署</a></li><li><a href=#vector配置>Vector配置</a></li><li><a href=#运行vector>运行Vector</a></li></ul></li><li><a href=#grafana>grafana</a><ul><li><a href=#运行grafana>运行grafana</a></li><li><a href=#配置clickhouse>配置ClickHouse</a><ul><li><a href=#安装插件>安装插件</a></li><li><a href=#增加数据源>增加数据源</a></li><li><a href=#导入看板>导入看板</a></li><li><a href=#grafana-请求日志分析看板预览>Grafana 请求日志分析看板预览</a></li></ul></li></ul></li></ul></nav></div></div><div class=content id=content><h1 id=介绍>介绍</h1><h2 id=nginx>Nginx</h2><h3 id=安装>安装</h3><blockquote><p>官方文档: <a href=https://nginx.org/en/linux_packages.html#Ubuntu target=_blank rel="noopener noreffer">https://nginx.org/en/linux_packages.html#Ubuntu</a></p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>sudo apt install curl gnupg2 ca-certificates lsb-release ubuntu-keyring
+</span></span><span class=line><span class=cl>curl https://nginx.org/keys/nginx_signing.key <span class=p>|</span> gpg --dearmor <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    <span class=p>|</span> sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg &gt;/dev/null
+</span></span><span class=line><span class=cl>gpg --dry-run --quiet --no-keyring --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
+</span></span></span><span class=line><span class=cl><span class=s2>http://nginx.org/packages/ubuntu `lsb_release -cs` nginx&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    <span class=p>|</span> sudo tee /etc/apt/sources.list.d/nginx.list
+</span></span><span class=line><span class=cl><span class=nb>echo</span> -e <span class=s2>&#34;Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    <span class=p>|</span> sudo tee /etc/apt/preferences.d/99nginx
+</span></span><span class=line><span class=cl>sudo apt update
+</span></span><span class=line><span class=cl>sudo apt install nginx -y
+</span></span><span class=line><span class=cl>systemctl start nginx
+</span></span></code></pre></td></tr></table></div></div><h3 id=配置nginx>配置Nginx</h3><p>编辑nginx.conf，增加以下配置</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>vim /etc/nginx/nginx.conf
+</span></span><span class=line><span class=cl>    map <span class=s2>&#34;</span><span class=nv>$time_iso8601</span><span class=s2> # </span><span class=nv>$msec</span><span class=s2>&#34;</span> <span class=nv>$time_iso8601_ms</span> <span class=o>{</span> <span class=s2>&#34;~(^[^+]+)(\+[0-9:]+) # \d+\.(\d+)</span>$<span class=s2>&#34;</span> <span class=nv>$1</span>.<span class=nv>$3$2</span><span class=p>;</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    log_format main
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;{&#34;timestamp&#34;:&#34;$time_iso8601_ms&#34;,&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;&#34;server_ip&#34;:&#34;$server_addr&#34;,&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;&#34;remote_ip&#34;:&#34;$remote_addr&#34;,&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;&#34;xff&#34;:&#34;$http_x_forwarded_for&#34;,&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;&#34;remote_user&#34;:&#34;$remote_user&#34;,&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;&#34;domain&#34;:&#34;$host&#34;,&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;&#34;url&#34;:&#34;$request_uri&#34;,&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;&#34;referer&#34;:&#34;$http_referer&#34;,&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;&#34;upstreamtime&#34;:&#34;$upstream_response_time&#34;,&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;&#34;responsetime&#34;:&#34;$request_time&#34;,&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;&#34;request_method&#34;:&#34;$request_method&#34;,&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;&#34;status&#34;:&#34;$status&#34;,&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;&#34;response_length&#34;:&#34;$bytes_sent&#34;,&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;&#34;request_length&#34;:&#34;$request_length&#34;,&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;&#34;protocol&#34;:&#34;$server_protocol&#34;,&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;&#34;upstreamhost&#34;:&#34;$upstream_addr&#34;,&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;&#34;http_user_agent&#34;:&#34;$http_user_agent&#34;&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;}&#39;</span><span class=p>;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=重载配置>重载配置</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>systemctl start nginx
+</span></span></code></pre></td></tr></table></div></div><h2 id=安装docker>安装Docker</h2><blockquote><p><a href=https://docs.docker.com/engine/install/ubuntu/ target=_blank rel="noopener noreffer">https://docs.docker.com/engine/install/ubuntu/</a></p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=k>for</span> pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc<span class=p>;</span> <span class=k>do</span> sudo apt-get remove <span class=nv>$pkg</span><span class=p>;</span> <span class=k>done</span>
+</span></span><span class=line><span class=cl><span class=c1># Add Docker&#39;s official GPG key:</span>
+</span></span><span class=line><span class=cl>sudo apt-get update
+</span></span><span class=line><span class=cl>sudo apt-get install ca-certificates curl
+</span></span><span class=line><span class=cl>sudo install -m <span class=m>0755</span> -d /etc/apt/keyrings
+</span></span><span class=line><span class=cl>sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+</span></span><span class=line><span class=cl>sudo chmod a+r /etc/apt/keyrings/docker.asc
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Add the repository to Apt sources:</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  <span class=s2>&#34;deb [arch=</span><span class=k>$(</span>dpkg --print-architecture<span class=k>)</span><span class=s2> signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+</span></span></span><span class=line><span class=cl><span class=s2>  </span><span class=k>$(</span>. /etc/os-release <span class=o>&amp;&amp;</span> <span class=nb>echo</span> <span class=s2>&#34;</span><span class=nv>$VERSION_CODENAME</span><span class=s2>&#34;</span><span class=k>)</span><span class=s2> stable&#34;</span> <span class=p>|</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+</span></span><span class=line><span class=cl>sudo apt-get update
+</span></span><span class=line><span class=cl>sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+</span></span></code></pre></td></tr></table></div></div><h2 id=clickhouse>Clickhouse</h2><h3 id=创建部署目录和docker-composeyaml>创建部署目录和docker-compose.yaml</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>mkdir -p /opt/clickhouse/etc/clickhouse-server/<span class=o>{</span>config.d,users.d<span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=nb>cd</span> /opt/clickhouse
+</span></span><span class=line><span class=cl>cat <span class=s>&lt;&lt;-EOF &gt; docker-compose.yaml
+</span></span></span><span class=line><span class=cl><span class=s>services:
+</span></span></span><span class=line><span class=cl><span class=s>  clickhouse:
+</span></span></span><span class=line><span class=cl><span class=s>    image: registry.cn-shenzhen.aliyuncs.com/starsl/clickhouse-server:23.4
+</span></span></span><span class=line><span class=cl><span class=s>    container_name: clickhouse
+</span></span></span><span class=line><span class=cl><span class=s>    hostname: clickhouse
+</span></span></span><span class=line><span class=cl><span class=s>    volumes:
+</span></span></span><span class=line><span class=cl><span class=s>      - /opt/clickhouse/logs:/var/log/clickhouse-server
+</span></span></span><span class=line><span class=cl><span class=s>      - /opt/clickhouse/data:/var/lib/clickhouse
+</span></span></span><span class=line><span class=cl><span class=s>      - /opt/clickhouse/etc/clickhouse-server/config.d/config.xml:/etc/clickhouse-server/config.d/config.xml
+</span></span></span><span class=line><span class=cl><span class=s>      - /opt/clickhouse/etc/clickhouse-server/users.d/users.xml:/etc/clickhouse-server/users.d/users.xml
+</span></span></span><span class=line><span class=cl><span class=s>      - /usr/share/zoneinfo/PRC:/etc/localtime
+</span></span></span><span class=line><span class=cl><span class=s>    ports:
+</span></span></span><span class=line><span class=cl><span class=s>      - 8123:8123
+</span></span></span><span class=line><span class=cl><span class=s>      - 9000:9000
+</span></span></span><span class=line><span class=cl><span class=s>EOF</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=配置主文件>配置主文件</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>vim /opt/clickhouse/etc/clickhouse-server/config.d/config.xml
+</span></span><span class=line><span class=cl>&lt;clickhouse <span class=nv>replace</span><span class=o>=</span><span class=s2>&#34;true&#34;</span>&gt;
+</span></span><span class=line><span class=cl>    &lt;logger&gt;
+</span></span><span class=line><span class=cl>        &lt;level&gt;debug&lt;/level&gt;
+</span></span><span class=line><span class=cl>        &lt;log&gt;/var/log/clickhouse-server/clickhouse-server.log&lt;/log&gt;
+</span></span><span class=line><span class=cl>        &lt;errorlog&gt;/var/log/clickhouse-server/clickhouse-server.err.log&lt;/errorlog&gt;
+</span></span><span class=line><span class=cl>        &lt;size&gt;1000M&lt;/size&gt;
+</span></span><span class=line><span class=cl>        &lt;count&gt;3&lt;/count&gt;
+</span></span><span class=line><span class=cl>    &lt;/logger&gt;
+</span></span><span class=line><span class=cl>    &lt;display_name&gt;ch_accesslog&lt;/display_name&gt;
+</span></span><span class=line><span class=cl>    &lt;listen_host&gt;0.0.0.0&lt;/listen_host&gt;
+</span></span><span class=line><span class=cl>    &lt;http_port&gt;8123&lt;/http_port&gt;
+</span></span><span class=line><span class=cl>    &lt;tcp_port&gt;9000&lt;/tcp_port&gt;
+</span></span><span class=line><span class=cl>    &lt;user_directories&gt;
+</span></span><span class=line><span class=cl>        &lt;users_xml&gt;
+</span></span><span class=line><span class=cl>            &lt;path&gt;users.xml&lt;/path&gt;
+</span></span><span class=line><span class=cl>        &lt;/users_xml&gt;
+</span></span><span class=line><span class=cl>        &lt;local_directory&gt;
+</span></span><span class=line><span class=cl>            &lt;path&gt;/var/lib/clickhouse/access/&lt;/path&gt;
+</span></span><span class=line><span class=cl>        &lt;/local_directory&gt;
+</span></span><span class=line><span class=cl>    &lt;/user_directories&gt;
+</span></span><span class=line><span class=cl>&lt;/clickhouse&gt;
+</span></span></code></pre></td></tr></table></div></div><h3 id=配置用户文件>配置用户文件</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nv>PASSWORD</span><span class=o>=</span><span class=k>$(</span>base64 &lt; /dev/urandom <span class=p>|</span> head -c8<span class=k>)</span><span class=p>;</span> <span class=nb>echo</span> <span class=s2>&#34;</span><span class=nv>$PASSWORD</span><span class=s2>&#34;</span><span class=p>;</span> <span class=nb>echo</span> -n <span class=s2>&#34;</span><span class=nv>$PASSWORD</span><span class=s2>&#34;</span> <span class=p>|</span> sha256sum <span class=p>|</span> tr -d <span class=s1>&#39;-&#39;</span>
+</span></span><span class=line><span class=cl>42ieYiyE
+</span></span><span class=line><span class=cl>75f5da2928c7fd93ac68a4db853bb4b6374b1f169fbb49aff3c068b061921d84
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>vim /opt/clickhouse/etc/clickhouse-server/users.d/users.xml
+</span></span><span class=line><span class=cl>&lt;?xml <span class=nv>version</span><span class=o>=</span><span class=s2>&#34;1.0&#34;</span>?&gt;
+</span></span><span class=line><span class=cl>&lt;clickhouse <span class=nv>replace</span><span class=o>=</span><span class=s2>&#34;true&#34;</span>&gt;
+</span></span><span class=line><span class=cl>    &lt;profiles&gt;
+</span></span><span class=line><span class=cl>        &lt;default&gt;
+</span></span><span class=line><span class=cl>            &lt;max_memory_usage&gt;10000000000&lt;/max_memory_usage&gt;
+</span></span><span class=line><span class=cl>            &lt;use_uncompressed_cache&gt;0&lt;/use_uncompressed_cache&gt;
+</span></span><span class=line><span class=cl>            &lt;load_balancing&gt;in_order&lt;/load_balancing&gt;
+</span></span><span class=line><span class=cl>            &lt;log_queries&gt;1&lt;/log_queries&gt;
+</span></span><span class=line><span class=cl>        &lt;/default&gt;
+</span></span><span class=line><span class=cl>    &lt;/profiles&gt;
+</span></span><span class=line><span class=cl>    &lt;users&gt;
+</span></span><span class=line><span class=cl>        &lt;default&gt;
+</span></span><span class=line><span class=cl>            &lt;password <span class=nv>remove</span><span class=o>=</span><span class=s1>&#39;1&#39;</span> /&gt;
+</span></span><span class=line><span class=cl>            &lt;password_sha256_hex&gt;填写生成的密码密文<span class=o>{</span>75f5da2928c7fd93ac68a4db853bb4b6374b1f169fbb49aff3c068b061921d84<span class=o>}</span>&lt;/password_sha256_hex&gt;
+</span></span><span class=line><span class=cl>            &lt;access_management&gt;1&lt;/access_management&gt;
+</span></span><span class=line><span class=cl>            &lt;profile&gt;default&lt;/profile&gt;
+</span></span><span class=line><span class=cl>            &lt;networks&gt;
+</span></span><span class=line><span class=cl>                &lt;ip&gt;::/0&lt;/ip&gt;
+</span></span><span class=line><span class=cl>            &lt;/networks&gt;
+</span></span><span class=line><span class=cl>            &lt;quota&gt;default&lt;/quota&gt;
+</span></span><span class=line><span class=cl>            &lt;access_management&gt;1&lt;/access_management&gt;
+</span></span><span class=line><span class=cl>            &lt;named_collection_control&gt;1&lt;/named_collection_control&gt;
+</span></span><span class=line><span class=cl>            &lt;show_named_collections&gt;1&lt;/show_named_collections&gt;
+</span></span><span class=line><span class=cl>            &lt;show_named_collections_secrets&gt;1&lt;/show_named_collections_secrets&gt;
+</span></span><span class=line><span class=cl>        &lt;/default&gt;
+</span></span><span class=line><span class=cl>    &lt;/users&gt;
+</span></span><span class=line><span class=cl>    &lt;quotas&gt;
+</span></span><span class=line><span class=cl>        &lt;default&gt;
+</span></span><span class=line><span class=cl>            &lt;interval&gt;
+</span></span><span class=line><span class=cl>                &lt;duration&gt;3600&lt;/duration&gt;
+</span></span><span class=line><span class=cl>                &lt;queries&gt;0&lt;/queries&gt;
+</span></span><span class=line><span class=cl>                &lt;errors&gt;0&lt;/errors&gt;
+</span></span><span class=line><span class=cl>                &lt;result_rows&gt;0&lt;/result_rows&gt;
+</span></span><span class=line><span class=cl>                &lt;read_rows&gt;0&lt;/read_rows&gt;
+</span></span><span class=line><span class=cl>                &lt;execution_time&gt;0&lt;/execution_time&gt;
+</span></span><span class=line><span class=cl>            &lt;/interval&gt;
+</span></span><span class=line><span class=cl>        &lt;/default&gt;
+</span></span><span class=line><span class=cl>    &lt;/quotas&gt;
+</span></span><span class=line><span class=cl>&lt;/clickhouse&gt;
+</span></span></code></pre></td></tr></table></div></div><h3 id=启动>启动</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker compose up -d
+</span></span></code></pre></td></tr></table></div></div><h3 id=创建数据库与表>创建数据库与表</h3><h4 id=进入ck数据库>进入ck数据库</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker container <span class=nb>exec</span> -it clickhouse clickhouse-client --user default --password 42ieYiyE
+</span></span></code></pre></td></tr></table></div></div><h4 id=执行创建语句>执行创建语句</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-mysql data-lang=mysql><span class=line><span class=cl><span class=k>CREATE</span><span class=w> </span><span class=k>DATABASE</span><span class=w> </span><span class=k>IF</span><span class=w> </span><span class=k>NOT</span><span class=w> </span><span class=k>EXISTS</span><span class=w> </span><span class=n>nginxlogs</span><span class=w> </span><span class=kp>ENGINE</span><span class=o>=</span><span class=n>Atomic</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>CREATE</span><span class=w> </span><span class=k>TABLE</span><span class=w> </span><span class=n>nginxlogs</span><span class=p>.</span><span class=nf>nginx_access</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=kt>timestamp</span><span class=o>`</span><span class=w> </span><span class=nf>DateTime64</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;Asia/Shanghai&#39;</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>server_ip</span><span class=o>`</span><span class=w> </span><span class=n>String</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>domain</span><span class=o>`</span><span class=w> </span><span class=n>String</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>request_method</span><span class=o>`</span><span class=w> </span><span class=n>String</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>status</span><span class=o>`</span><span class=w> </span><span class=n>Int32</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>top_path</span><span class=o>`</span><span class=w> </span><span class=n>String</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>path</span><span class=o>`</span><span class=w> </span><span class=n>String</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>query</span><span class=o>`</span><span class=w> </span><span class=n>String</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>protocol</span><span class=o>`</span><span class=w> </span><span class=n>String</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>referer</span><span class=o>`</span><span class=w> </span><span class=n>String</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>upstreamhost</span><span class=o>`</span><span class=w> </span><span class=n>String</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>responsetime</span><span class=o>`</span><span class=w> </span><span class=n>Float32</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>upstreamtime</span><span class=o>`</span><span class=w> </span><span class=n>Float32</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>duration</span><span class=o>`</span><span class=w> </span><span class=n>Float32</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>request_length</span><span class=o>`</span><span class=w> </span><span class=n>Int32</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>response_length</span><span class=o>`</span><span class=w> </span><span class=n>Int32</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>client_ip</span><span class=o>`</span><span class=w> </span><span class=n>String</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>client_latitude</span><span class=o>`</span><span class=w> </span><span class=n>Float32</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>client_longitude</span><span class=o>`</span><span class=w> </span><span class=n>Float32</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>remote_user</span><span class=o>`</span><span class=w> </span><span class=n>String</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>remote_ip</span><span class=o>`</span><span class=w> </span><span class=n>String</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>xff</span><span class=o>`</span><span class=w> </span><span class=n>String</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>client_city</span><span class=o>`</span><span class=w> </span><span class=n>String</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>client_region</span><span class=o>`</span><span class=w> </span><span class=n>String</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>client_country</span><span class=o>`</span><span class=w> </span><span class=n>String</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>http_user_agent</span><span class=o>`</span><span class=w> </span><span class=n>String</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>client_browser_family</span><span class=o>`</span><span class=w> </span><span class=n>String</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>client_browser_major</span><span class=o>`</span><span class=w> </span><span class=n>String</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>client_os_family</span><span class=o>`</span><span class=w> </span><span class=n>String</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>client_os_major</span><span class=o>`</span><span class=w> </span><span class=n>String</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>client_device_brand</span><span class=o>`</span><span class=w> </span><span class=n>String</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>client_device_model</span><span class=o>`</span><span class=w> </span><span class=n>String</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>`</span><span class=n>createdtime</span><span class=o>`</span><span class=w> </span><span class=nf>DateTime64</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;Asia/Shanghai&#39;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kp>ENGINE</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>MergeTree</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>PARTITION</span><span class=w> </span><span class=k>BY</span><span class=w> </span><span class=nf>toYYYYMMDD</span><span class=p>(</span><span class=kt>timestamp</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>PRIMARY</span><span class=w> </span><span class=k>KEY</span><span class=w> </span><span class=p>(</span><span class=kt>timestamp</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>server_ip</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>status</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>top_path</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>domain</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>upstreamhost</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>client_ip</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>remote_user</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>request_method</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>protocol</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>responsetime</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>upstreamtime</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>duration</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>request_length</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>response_length</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>path</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>referer</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>client_city</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>client_region</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>client_country</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>client_browser_family</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>client_browser_major</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>client_os_family</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>client_os_major</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>client_device_brand</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>client_device_model</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>TTL</span><span class=w> </span><span class=nf>toDateTime</span><span class=p>(</span><span class=kt>timestamp</span><span class=p>)</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=nf>toIntervalDay</span><span class=p>(</span><span class=mi>30</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>SETTINGS</span><span class=w> </span><span class=n>index_granularity</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>8192</span><span class=p>;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=部署vector采集日志>部署Vector采集日志</h2><h3 id=vector部署>Vector部署</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 创建部署目录和docker-compose.yaml</span>
+</span></span><span class=line><span class=cl>mkdir -p /opt/vector/conf
+</span></span><span class=line><span class=cl><span class=nb>cd</span> /opt/vector
+</span></span><span class=line><span class=cl>touch access_vector_error.log
+</span></span><span class=line><span class=cl>wget https://raw.githubusercontent.com/P3TERX/GeoLite.mmdb/download/GeoLite2-City.mmdb
+</span></span><span class=line><span class=cl>cat <span class=s>&lt;&lt;-EOF &gt; docker-compose.yaml
+</span></span></span><span class=line><span class=cl><span class=s>services:
+</span></span></span><span class=line><span class=cl><span class=s>  vector:
+</span></span></span><span class=line><span class=cl><span class=s>    image: registry.cn-shenzhen.aliyuncs.com/starsl/vector:0.41.1-alpine
+</span></span></span><span class=line><span class=cl><span class=s>    container_name: vector
+</span></span></span><span class=line><span class=cl><span class=s>    hostname: vector
+</span></span></span><span class=line><span class=cl><span class=s>    restart: always
+</span></span></span><span class=line><span class=cl><span class=s>    entrypoint: vector --config-dir /etc/vector/conf 
+</span></span></span><span class=line><span class=cl><span class=s>    ports:
+</span></span></span><span class=line><span class=cl><span class=s>      - 8686:8686
+</span></span></span><span class=line><span class=cl><span class=s>    volumes:
+</span></span></span><span class=line><span class=cl><span class=s>      - /var/log/nginx:/nginx_logs  # 这是需要采集的日志的路径需要挂载到容器内
+</span></span></span><span class=line><span class=cl><span class=s>      - /opt/vector/access_vector_error.log:/tmp/access_vector_error.log
+</span></span></span><span class=line><span class=cl><span class=s>      - /opt/vector/GeoLite2-City.mmdb:/etc/vector/GeoLite2-City.mmdb
+</span></span></span><span class=line><span class=cl><span class=s>      - /opt/vector/conf:/etc/vector/conf
+</span></span></span><span class=line><span class=cl><span class=s>      - /usr/share/zoneinfo/PRC:/etc/localtime
+</span></span></span><span class=line><span class=cl><span class=s>EOF</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=vector配置>Vector配置</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>cd</span> /opt/vector/conf
+</span></span><span class=line><span class=cl>cat <span class=s>&lt;&lt;-EOF &gt; vector.yaml
+</span></span></span><span class=line><span class=cl><span class=s>timezone: &#34;Asia/Shanghai&#34;
+</span></span></span><span class=line><span class=cl><span class=s>api:
+</span></span></span><span class=line><span class=cl><span class=s>  enabled: true
+</span></span></span><span class=line><span class=cl><span class=s>  address: &#34;0.0.0.0:8686&#34;
+</span></span></span><span class=line><span class=cl><span class=s>EOF</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>vim nginx-access.yaml
+</span></span><span class=line><span class=cl>sources:
+</span></span><span class=line><span class=cl>  01_file_nginx_access:
+</span></span><span class=line><span class=cl>    type: file
+</span></span><span class=line><span class=cl>    include:
+</span></span><span class=line><span class=cl>      - /nginx_logs/access.log  <span class=c1>#nginx请求日志路径</span>
+</span></span><span class=line><span class=cl>transforms:
+</span></span><span class=line><span class=cl>  02_parse_nginx_access:
+</span></span><span class=line><span class=cl>    drop_on_error: <span class=nb>true</span>
+</span></span><span class=line><span class=cl>    reroute_dropped: <span class=nb>true</span>
+</span></span><span class=line><span class=cl>    type: remap
+</span></span><span class=line><span class=cl>    inputs:
+</span></span><span class=line><span class=cl>      - 01_file_nginx_access
+</span></span><span class=line><span class=cl>    source: <span class=p>|</span>
+</span></span><span class=line><span class=cl>      .message <span class=o>=</span> string!<span class=o>(</span>.message<span class=o>)</span>
+</span></span><span class=line><span class=cl>      <span class=k>if</span> contains<span class=o>(</span>.message,<span class=s2>&#34;\\x&#34;</span><span class=o>)</span> <span class=o>{</span> .message <span class=o>=</span> replace<span class=o>(</span>.message, <span class=s2>&#34;\\x&#34;</span>, <span class=s2>&#34;\\\\x&#34;</span><span class=o>)</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>      . <span class=o>=</span> parse_json!<span class=o>(</span>.message<span class=o>)</span>
+</span></span><span class=line><span class=cl>      .createdtime <span class=o>=</span> to_unix_timestamp<span class=o>(</span>now<span class=o>()</span>, unit: <span class=s2>&#34;milliseconds&#34;</span><span class=o>)</span>
+</span></span><span class=line><span class=cl>      .timestamp <span class=o>=</span> to_unix_timestamp<span class=o>(</span>parse_timestamp!<span class=o>(</span>.timestamp , format: <span class=s2>&#34;%+&#34;</span><span class=o>)</span>, unit: <span class=s2>&#34;milliseconds&#34;</span><span class=o>)</span>
+</span></span><span class=line><span class=cl>      .url_list <span class=o>=</span> split!<span class=o>(</span>.url, <span class=s2>&#34;?&#34;</span>, 2<span class=o>)</span>
+</span></span><span class=line><span class=cl>      .path <span class=o>=</span> .url_list<span class=o>[</span>0<span class=o>]</span>
+</span></span><span class=line><span class=cl>      .query <span class=o>=</span> .url_list<span class=o>[</span>1<span class=o>]</span>
+</span></span><span class=line><span class=cl>      .path_list <span class=o>=</span> split!<span class=o>(</span>.path, <span class=s2>&#34;/&#34;</span>, 3<span class=o>)</span>
+</span></span><span class=line><span class=cl>      <span class=k>if</span> length<span class=o>(</span>.path_list<span class=o>)</span> &gt; <span class=m>2</span> <span class=o>{</span>.top_path <span class=o>=</span> join!<span class=o>([</span><span class=s2>&#34;/&#34;</span>, .path_list<span class=o>[</span>1<span class=o>]])}</span> <span class=k>else</span> <span class=o>{</span>.top_path <span class=o>=</span> <span class=s2>&#34;/&#34;</span><span class=o>}</span>
+</span></span><span class=line><span class=cl>      .duration <span class=o>=</span> round<span class=o>(((</span>to_float<span class=o>(</span>.responsetime<span class=o>)</span> ?? 0<span class=o>)</span> - <span class=o>(</span>to_float<span class=o>(</span>.upstreamtime<span class=o>)</span> ?? 0<span class=o>))</span> ?? 0,3<span class=o>)</span>
+</span></span><span class=line><span class=cl>      <span class=k>if</span> .xff <span class=o>==</span> <span class=s2>&#34;-&#34;</span> <span class=o>{</span> .xff <span class=o>=</span> .remote_ip <span class=o>}</span>
+</span></span><span class=line><span class=cl>      .client_ip <span class=o>=</span> split!<span class=o>(</span>.xff, <span class=s2>&#34;,&#34;</span>, 2<span class=o>)[</span>0<span class=o>]</span>
+</span></span><span class=line><span class=cl>      .ua <span class=o>=</span> parse_user_agent!<span class=o>(</span>.http_user_agent , mode: <span class=s2>&#34;enriched&#34;</span><span class=o>)</span>
+</span></span><span class=line><span class=cl>      .client_browser_family <span class=o>=</span> .ua.browser.family
+</span></span><span class=line><span class=cl>      .client_browser_major <span class=o>=</span> .ua.browser.major
+</span></span><span class=line><span class=cl>      .client_os_family <span class=o>=</span> .ua.os.family
+</span></span><span class=line><span class=cl>      .client_os_major <span class=o>=</span> .ua.os.major
+</span></span><span class=line><span class=cl>      .client_device_brand <span class=o>=</span> .ua.device.brand
+</span></span><span class=line><span class=cl>      .client_device_model <span class=o>=</span> .ua.device.model
+</span></span><span class=line><span class=cl>      .geoip <span class=o>=</span> get_enrichment_table_record<span class=o>(</span><span class=s2>&#34;geoip_table&#34;</span>, <span class=o>{</span><span class=s2>&#34;ip&#34;</span>: .client_ip<span class=o>})</span> ?? <span class=o>{</span><span class=s2>&#34;city_name&#34;</span>:<span class=s2>&#34;unknown&#34;</span>,<span class=s2>&#34;region_name&#34;</span>:<span class=s2>&#34;unknown&#34;</span>,<span class=s2>&#34;country_name&#34;</span>:<span class=s2>&#34;unknown&#34;</span><span class=o>}</span>
+</span></span><span class=line><span class=cl>      .client_city <span class=o>=</span> .geoip.city_name
+</span></span><span class=line><span class=cl>      .client_region <span class=o>=</span> .geoip.region_name
+</span></span><span class=line><span class=cl>      .client_country <span class=o>=</span> .geoip.country_name
+</span></span><span class=line><span class=cl>      .client_latitude <span class=o>=</span> .geoip.latitude
+</span></span><span class=line><span class=cl>      .client_longitude <span class=o>=</span> .geoip.longitude
+</span></span><span class=line><span class=cl>      del<span class=o>(</span>.path_list<span class=o>)</span>
+</span></span><span class=line><span class=cl>      del<span class=o>(</span>.url_list<span class=o>)</span>
+</span></span><span class=line><span class=cl>      del<span class=o>(</span>.ua<span class=o>)</span>
+</span></span><span class=line><span class=cl>      del<span class=o>(</span>.geoip<span class=o>)</span>
+</span></span><span class=line><span class=cl>      del<span class=o>(</span>.url<span class=o>)</span>
+</span></span><span class=line><span class=cl>sinks:
+</span></span><span class=line><span class=cl>  03_ck_nginx_access:
+</span></span><span class=line><span class=cl>    type: clickhouse
+</span></span><span class=line><span class=cl>    inputs:
+</span></span><span class=line><span class=cl>      - 02_parse_nginx_access
+</span></span><span class=line><span class=cl>    endpoint: http://10.7.0.26:8123  <span class=c1>#clickhouse http接口</span>
+</span></span><span class=line><span class=cl>    database: nginxlogs  <span class=c1>#clickhouse 库</span>
+</span></span><span class=line><span class=cl>    table: nginx_access  <span class=c1>#clickhouse 表</span>
+</span></span><span class=line><span class=cl>    auth:
+</span></span><span class=line><span class=cl>      strategy: basic
+</span></span><span class=line><span class=cl>      user: default  <span class=c1>#clickhouse 库</span>
+</span></span><span class=line><span class=cl>      password: GlWszBQp  <span class=c1>#clickhouse 密码</span>
+</span></span><span class=line><span class=cl>    compression: gzip
+</span></span><span class=line><span class=cl>  04_out_nginx_dropped:
+</span></span><span class=line><span class=cl>    type: file
+</span></span><span class=line><span class=cl>    inputs:
+</span></span><span class=line><span class=cl>      - 02_parse_nginx_access.dropped
+</span></span><span class=line><span class=cl>    path: /tmp/access_vector_error.log  <span class=c1>#解析异常的日志</span>
+</span></span><span class=line><span class=cl>    encoding:
+</span></span><span class=line><span class=cl>      codec: json
+</span></span><span class=line><span class=cl>enrichment_tables:
+</span></span><span class=line><span class=cl>  geoip_table:
+</span></span><span class=line><span class=cl>    path: <span class=s2>&#34;/etc/vector/GeoLite2-City.mmdb&#34;</span>
+</span></span><span class=line><span class=cl>    type: geoip
+</span></span><span class=line><span class=cl>    locale: <span class=s2>&#34;zh-CN&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=运行vector>运行Vector</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker compose up -d
+</span></span></code></pre></td></tr></table></div></div><h2 id=grafana>grafana</h2><h3 id=运行grafana>运行grafana</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker run -d --name<span class=o>=</span>grafana -p 3000:3000 grafana/grafana
+</span></span></code></pre></td></tr></table></div></div><h3 id=配置clickhouse>配置ClickHouse</h3><h4 id=安装插件>安装插件</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker container <span class=nb>exec</span> -it grafana grafana cli plugins install grafana-clickhouse-datasource
+</span></span><span class=line><span class=cl>docker restart grafana
+</span></span></code></pre></td></tr></table></div></div><h4 id=增加数据源>增加数据源</h4><p><img class=lazyload src=/svg/loading.min.svg data-src=./add-clickhouse-datasource.jpg data-srcset="./add-clickhouse-datasource.jpg, ./add-clickhouse-datasource.jpg 1.5x, ./add-clickhouse-datasource.jpg 2x" data-sizes=auto alt=./add-clickhouse-datasource.jpg title=增加数据源></p><h4 id=导入看板>导入看板</h4><p><img class=lazyload src=/svg/loading.min.svg data-src=./grafana-import.png data-srcset="./grafana-import.png, ./grafana-import.png 1.5x, ./grafana-import.png 2x" data-sizes=auto alt=./grafana-import.png title=增加数据源></p><h4 id=grafana-请求日志分析看板预览>Grafana 请求日志分析看板预览</h4><p>该看板是基于 ClickHouse + Vector 的 NGINX 请求日志分析看板。包括请求与耗时分析、异常请求分析、用户分析、地理位置分布图、指定接口分析、请求日志明细。</p><p><strong>尤其在异常请求分析方面，总结多年异常请求分析经验，从各个角度设计大量异常请求的分析图表。</strong></p><ul><li>整体请求与耗时分析</li></ul><p><img class=lazyload src=/svg/loading.min.svg data-src=./%e6%95%b4%e4%bd%93%e8%af%b7%e6%b1%82%e4%b8%8e%e8%80%97%e6%97%b6%e5%88%86%e6%9e%90.png data-srcset="./%e6%95%b4%e4%bd%93%e8%af%b7%e6%b1%82%e4%b8%8e%e8%80%97%e6%97%b6%e5%88%86%e6%9e%90.png, ./%e6%95%b4%e4%bd%93%e8%af%b7%e6%b1%82%e4%b8%8e%e8%80%97%e6%97%b6%e5%88%86%e6%9e%90.png 1.5x, ./%e6%95%b4%e4%bd%93%e8%af%b7%e6%b1%82%e4%b8%8e%e8%80%97%e6%97%b6%e5%88%86%e6%9e%90.png 2x" data-sizes=auto alt=./整体请求与耗时分析.png title=./整体请求与耗时分析.png></p><ul><li>NGINX 异常请求分析</li></ul><p>![](./NGINX 异常请求分析.png)</p><ul><li>用户请求数据分析</li></ul><p><img class=lazyload src=/svg/loading.min.svg data-src=./%e7%94%a8%e6%88%b7%e8%af%b7%e6%b1%82%e6%95%b0%e6%8d%ae%e5%88%86%e6%9e%90.png data-srcset="./%e7%94%a8%e6%88%b7%e8%af%b7%e6%b1%82%e6%95%b0%e6%8d%ae%e5%88%86%e6%9e%90.png, ./%e7%94%a8%e6%88%b7%e8%af%b7%e6%b1%82%e6%95%b0%e6%8d%ae%e5%88%86%e6%9e%90.png 1.5x, ./%e7%94%a8%e6%88%b7%e8%af%b7%e6%b1%82%e6%95%b0%e6%8d%ae%e5%88%86%e6%9e%90.png 2x" data-sizes=auto alt=./用户请求数据分析.png title=./用户请求数据分析.png></p><ul><li>地理位置数据分析</li></ul><p><img class=lazyload src=/svg/loading.min.svg data-src=./%e5%9c%b0%e7%90%86%e4%bd%8d%e7%bd%ae%e6%95%b0%e6%8d%ae%e5%88%86%e6%9e%90.png data-srcset="./%e5%9c%b0%e7%90%86%e4%bd%8d%e7%bd%ae%e6%95%b0%e6%8d%ae%e5%88%86%e6%9e%90.png, ./%e5%9c%b0%e7%90%86%e4%bd%8d%e7%bd%ae%e6%95%b0%e6%8d%ae%e5%88%86%e6%9e%90.png 1.5x, ./%e5%9c%b0%e7%90%86%e4%bd%8d%e7%bd%ae%e6%95%b0%e6%8d%ae%e5%88%86%e6%9e%90.png 2x" data-sizes=auto alt=./地理位置数据分析.png title=./地理位置数据分析.png></p><ul><li>指定接口明细分析</li></ul><p><img class=lazyload src=/svg/loading.min.svg data-src=./%e6%8c%87%e5%ae%9a%e6%8e%a5%e5%8f%a3%e6%98%8e%e7%bb%86%e5%88%86%e6%9e%90.png data-srcset="./%e6%8c%87%e5%ae%9a%e6%8e%a5%e5%8f%a3%e6%98%8e%e7%bb%86%e5%88%86%e6%9e%90.png, ./%e6%8c%87%e5%ae%9a%e6%8e%a5%e5%8f%a3%e6%98%8e%e7%bb%86%e5%88%86%e6%9e%90.png 1.5x, ./%e6%8c%87%e5%ae%9a%e6%8e%a5%e5%8f%a3%e6%98%8e%e7%bb%86%e5%88%86%e6%9e%90.png 2x" data-sizes=auto alt=./指定接口明细分析.png title=./指定接口明细分析.png></p><ul><li>请求日志详情分析</li></ul><p><img class=lazyload src=/svg/loading.min.svg data-src=./%e8%af%b7%e6%b1%82%e6%97%a5%e5%bf%97%e8%af%a6%e6%83%85%e5%88%86%e6%9e%90.png data-srcset="./%e8%af%b7%e6%b1%82%e6%97%a5%e5%bf%97%e8%af%a6%e6%83%85%e5%88%86%e6%9e%90.png, ./%e8%af%b7%e6%b1%82%e6%97%a5%e5%bf%97%e8%af%a6%e6%83%85%e5%88%86%e6%9e%90.png 1.5x, ./%e8%af%b7%e6%b1%82%e6%97%a5%e5%bf%97%e8%af%a6%e6%83%85%e5%88%86%e6%9e%90.png 2x" data-sizes=auto alt=./请求日志详情分析.png title=./请求日志详情分析.png></p><h1 id=参考文档>参考文档</h1><p><a href=https://mp.weixin.qq.com/s/6VSwFCfK0G_QQUjMnLs9Dw target=_blank rel="noopener noreffer">https://mp.weixin.qq.com/s/6VSwFCfK0G_QQUjMnLs9Dw</a></p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2024-11-06</span></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/ch_vector%E6%89%93%E9%80%A0%E6%9C%80%E5%BC%BAgrafana%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90/index.md target=_blank>阅读原始文档</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="分享到 Twitter" data-sharer=twitter data-url=https://example.com/ch_vector%E6%89%93%E9%80%A0%E6%9C%80%E5%BC%BAgrafana%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90/ data-title=CH+Vector打造最强Grafana日志分析 data-hashtags><i class="fab fa-twitter fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="分享到 Facebook" data-sharer=facebook data-url=https://example.com/ch_vector%E6%89%93%E9%80%A0%E6%9C%80%E5%BC%BAgrafana%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90/ data-hashtag><i class="fab fa-facebook-square fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="分享到 Hacker News" data-sharer=hackernews data-url=https://example.com/ch_vector%E6%89%93%E9%80%A0%E6%9C%80%E5%BC%BAgrafana%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90/ data-title=CH+Vector打造最强Grafana日志分析><i class="fab fa-hacker-news fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="分享到 Line" data-sharer=line data-url=https://example.com/ch_vector%E6%89%93%E9%80%A0%E6%9C%80%E5%BC%BAgrafana%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90/ data-title=CH+Vector打造最强Grafana日志分析><i data-svg-src=https://fastly.jsdelivr.net/npm/simple-icons@7.3.0/icons/line.svg aria-hidden=true></i></a><a href=javascript:void(0); title="分享到 微博" data-sharer=weibo data-url=https://example.com/ch_vector%E6%89%93%E9%80%A0%E6%9C%80%E5%BC%BAgrafana%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90/ data-title=CH+Vector打造最强Grafana日志分析><i class="fab fa-weibo fa-fw" aria-hidden=true></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw" aria-hidden=true></i>&nbsp;<a href=/tags/>Tags</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/>主页</a></span></section></div><div class=post-nav><a href=/ssoerror/ class=prev rel=prev title=单点登录报错记录><i class="fas fa-angle-left fa-fw" aria-hidden=true></i>单点登录报错记录</a>
+<a href=/versionmanager/ class=next rel=next title="Go 多版本管理工具">Go 多版本管理工具<i class="fas fa-angle-right fa-fw" aria-hidden=true></i></a></div></div><div id=comments><div id=valine class=comment></div><noscript>Please enable JavaScript to view the comments powered by <a href=https://valine.js.org/>Valine</a>.</noscript></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.138.0">Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden=true></i> LoveIt</a></div><div class=footer-line itemscope itemtype=http://schema.org/CreativeWork><i class="far fa-copyright fa-fw" aria-hidden=true></i><span itemprop=copyrightYear>2023 - 2024</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank></a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span><span class=icp-splitter>&nbsp;|&nbsp;</span><br class=icp-br><span class=icp><a href=https://beian.miit.gov.cn/ target=_blank>豫ICP备19007804号-1</a></span><span class=icp-splitter>&nbsp;|&nbsp;</span>
+<span class=icp><img style=width:13px;height:auto;margin:auto src=images/备案图标.png>&nbsp;<a href="https://beian.mps.gov.cn/#/query/webSearch?code=31010402333615" rel=noreferrer target=_blank>沪公网安备31010402333615</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw" aria-hidden=true></i>
+</a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw" aria-hidden=true></i></a></div><link rel=stylesheet href=/lib/valine/valine.min.css><link rel=stylesheet href=https://fastly.jsdelivr.net/npm/lightgallery@2.5.0/css/lightgallery-bundle.min.css><script type=text/javascript src=https://fastly.jsdelivr.net/npm/valine@1.5.0/dist/Valine.min.js></script><script type=text/javascript src=https://fastly.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js></script><script type=text/javascript src=https://fastly.jsdelivr.net/npm/algoliasearch@4.13.1/dist/algoliasearch-lite.umd.min.js></script><script type=text/javascript src=https://fastly.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js></script><script type=text/javascript src=https://fastly.jsdelivr.net/npm/lightgallery@2.5.0/lightgallery.min.js></script><script type=text/javascript src=https://fastly.jsdelivr.net/npm/lightgallery@2.5.0/plugins/thumbnail/lg-thumbnail.min.js></script><script type=text/javascript src=https://fastly.jsdelivr.net/npm/lightgallery@2.5.0/plugins/zoom/lg-zoom.min.js></script><script type=text/javascript src=https://fastly.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js></script><script type=text/javascript src=https://fastly.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:50},comment:{valine:{appId:"JxkzOOlXpIBH5gvshgaFQa3S-gzGzoHsz",appKey:"paoH5vV12cfEJY8Uj7hjZ5ww",avatar:"mp",el:"#valine",emojiCDN:"https://cdn.jsdelivr.net/npm/emoji-datasource-google@14.0.0/img/google/64/",emojiMaps:{100:"1f4af.png",alien:"1f47d.png",anger:"1f4a2.png",angry:"1f620.png",anguished:"1f627.png",astonished:"1f632.png",black_heart:"1f5a4.png",blue_heart:"1f499.png",blush:"1f60a.png",bomb:"1f4a3.png",boom:"1f4a5.png",broken_heart:"1f494.png",brown_heart:"1f90e.png",clown_face:"1f921.png",cold_face:"1f976.png",cold_sweat:"1f630.png",confounded:"1f616.png",confused:"1f615.png",cry:"1f622.png",crying_cat_face:"1f63f.png",cupid:"1f498.png",dash:"1f4a8.png",disappointed:"1f61e.png",disappointed_relieved:"1f625.png",dizzy:"1f4ab.png",dizzy_face:"1f635.png",drooling_face:"1f924.png",exploding_head:"1f92f.png",expressionless:"1f611.png",face_vomiting:"1f92e.png",face_with_cowboy_hat:"1f920.png",face_with_hand_over_mouth:"1f92d.png",face_with_head_bandage:"1f915.png",face_with_monocle:"1f9d0.png",face_with_raised_eyebrow:"1f928.png",face_with_rolling_eyes:"1f644.png",face_with_symbols_on_mouth:"1f92c.png",face_with_thermometer:"1f912.png",fearful:"1f628.png",flushed:"1f633.png",frowning:"1f626.png",ghost:"1f47b.png",gift_heart:"1f49d.png",green_heart:"1f49a.png",grimacing:"1f62c.png",grin:"1f601.png",grinning:"1f600.png",hankey:"1f4a9.png",hear_no_evil:"1f649.png",heart:"2764-fe0f.png",heart_decoration:"1f49f.png",heart_eyes:"1f60d.png",heart_eyes_cat:"1f63b.png",heartbeat:"1f493.png",heartpulse:"1f497.png",heavy_heart_exclamation_mark_ornament:"2763-fe0f.png",hole:"1f573-fe0f.png",hot_face:"1f975.png",hugging_face:"1f917.png",hushed:"1f62f.png",imp:"1f47f.png",innocent:"1f607.png",japanese_goblin:"1f47a.png",japanese_ogre:"1f479.png",joy:"1f602.png",joy_cat:"1f639.png",kiss:"1f48b.png",kissing:"1f617.png",kissing_cat:"1f63d.png",kissing_closed_eyes:"1f61a.png",kissing_heart:"1f618.png",kissing_smiling_eyes:"1f619.png",laughing:"1f606.png",left_speech_bubble:"1f5e8-fe0f.png",love_letter:"1f48c.png",lying_face:"1f925.png",mask:"1f637.png",money_mouth_face:"1f911.png",nauseated_face:"1f922.png",nerd_face:"1f913.png",neutral_face:"1f610.png",no_mouth:"1f636.png",open_mouth:"1f62e.png",orange_heart:"1f9e1.png",partying_face:"1f973.png",pensive:"1f614.png",persevere:"1f623.png",pleading_face:"1f97a.png",pouting_cat:"1f63e.png",purple_heart:"1f49c.png",rage:"1f621.png",relaxed:"263a-fe0f.png",relieved:"1f60c.png",revolving_hearts:"1f49e.png",right_anger_bubble:"1f5ef-fe0f.png",robot_face:"1f916.png",rolling_on_the_floor_laughing:"1f923.png",scream:"1f631.png",scream_cat:"1f640.png",see_no_evil:"1f648.png",shushing_face:"1f92b.png",skull:"1f480.png",skull_and_crossbones:"2620-fe0f.png",sleeping:"1f634.png",sleepy:"1f62a.png",slightly_frowning_face:"1f641.png",slightly_smiling_face:"1f642.png",smile:"1f604.png",smile_cat:"1f638.png",smiley:"1f603.png",smiley_cat:"1f63a.png",smiling_face_with_3_hearts:"1f970.png",smiling_imp:"1f608.png",smirk:"1f60f.png",smirk_cat:"1f63c.png",sneezing_face:"1f927.png",sob:"1f62d.png",space_invader:"1f47e.png",sparkling_heart:"1f496.png",speak_no_evil:"1f64a.png",speech_balloon:"1f4ac.png","star-struck":"1f929.png",stuck_out_tongue:"1f61b.png",stuck_out_tongue_closed_eyes:"1f61d.png",stuck_out_tongue_winking_eye:"1f61c.png",sunglasses:"1f60e.png",sweat:"1f613.png",sweat_drops:"1f4a6.png",sweat_smile:"1f605.png",thinking_face:"1f914.png",thought_balloon:"1f4ad.png",tired_face:"1f62b.png",triumph:"1f624.png",two_hearts:"1f495.png",unamused:"1f612.png",upside_down_face:"1f643.png",weary:"1f629.png",white_frowning_face:"2639-fe0f.png",white_heart:"1f90d.png",wink:"1f609.png",woozy_face:"1f974.png",worried:"1f61f.png",yawning_face:"1f971.png",yellow_heart:"1f49b.png",yum:"1f60b.png",zany_face:"1f92a.png",zipper_mouth_face:"1f910.png",zzz:"1f4a4.png"},enableQQ:!0,highlight:!0,lang:"zh-CN",pageSize:10,placeholder:"你的评论 ...",recordIP:!0,serverURLs:"https://valine.p-pp.cn",visitor:!0}},lightgallery:!0,search:{algoliaAppID:"PASDMWALPK",algoliaIndex:"index.zh-cn",algoliaSearchKey:"b42948e51daaa93df92381c8e2ac0f93",highlightTag:"em",maxResultLength:10,noResultsFound:"没有找到结果",snippetLength:50,type:"algolia"}}</script><script type=text/javascript src=/js/theme.min.js></script></body></html>
