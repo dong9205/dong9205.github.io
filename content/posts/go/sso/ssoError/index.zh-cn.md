@@ -21,18 +21,7 @@ featuredImagePreview: ""
 
 hiddenFromHomePage: false
 hiddenFromSearch: false
-
-toc:
-  enable: true
-  auto: true
-
-mapbox:
-share:
-  enable: true
-comment:
-  enable: true
-
-lightgallery: true
+lightgallery: false
 ---
 
 # SAML登录异常错误记录

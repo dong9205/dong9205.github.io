@@ -22,17 +22,8 @@ featuredImagePreview: ""
 hiddenFromHomePage: false
 hiddenFromSearch: false
 
-toc:
-  enable: true
-  auto: true
 
-mapbox:
-share:
-  enable: true
-comment:
-  enable: true
-
-lightgallery: true
+lightgallery: false
 ---
 
 # 使用 WebAssembly 对 Istio 进行扩展

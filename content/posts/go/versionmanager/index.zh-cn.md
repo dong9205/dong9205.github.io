@@ -9,7 +9,7 @@ author: "Derrick"
 authorLink: "https://www.p-pp.cn/"
 summary: ""
 license: ""
-tags: [""]
+tags: ["Go"]
 resources:
 - name: "featured-image"
   src: ""
@@ -21,36 +21,8 @@ featuredImagePreview: ""
 
 hiddenFromHomePage: false
 hiddenFromSearch: false
-
-toc:
-  enable: true
-  auto: true
-
-mapbox:
-share:
-  enable: true
-comment:
-  enable: true
-
-lightgallery: true
+lightgallery: false
 ---
-
-> 本文由 [简悦 SimpRead](http://ksria.com/simpread/) 转码， 原文地址 [blog.csdn.net](https://blog.csdn.net/weixin_44621343/article/details/133148154)
-
-Go 多[版本管理工具](https://so.csdn.net/so/search?q=%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7&spm=1001.2101.3001.7020)
-----------------------------------------------------------------------------------------------------------------------------
-
-#### 文章目录
-
-*   [Go 多版本管理工具](#Go__1)
-*   *   [一、go get 命令](#go_get__6)
-    *   *   [1.1 使用方法：](#11__10)
-    *   [二、Goenv](#Goenv_34)
-    *   [三、GVM (Go Version Manager)](#GVM_Go_Version_Manager_66)
-    *   [四、voidint/g](#voidintg_90)
-    *   *   [4.1 安装](#41__92)
-        *   [4.2 冲突](#42__111)
-        *   [4.3 使用](#43__136)
 
 在平时开发中，本地新旧项目并行开发的过程中，你大概率会遇到一个令人头疼的问题，如何同时使用两个不同版本的 Golang Runtime 进行开发呢？
 

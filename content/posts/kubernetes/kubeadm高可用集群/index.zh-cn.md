@@ -32,12 +32,7 @@ featuredImagePreview: ""
 
 hiddenFromHomePage: false
 hiddenFromSearch: false
-
-toc:
-  enable: true
-  auto: true
-
-lightgallery: true
+lightgallery: false
 ---
 # kubeadm高可用集群
 
@@ -137,12 +132,12 @@ sudo systemctl enable --now kubelet
 
 > 使用haproxy+keepalived的方式做apiserver高可用
 
-| 机器 | IP | 安装步骤 |
-| :----: | :--: | :------------:|
+|  机器   |      IP      |  安装步骤   |
+| :-----: | :----------: | :---------: |
 | master1 | 192.168.25.3 | kubeadm安装 |
 | master2 | 192.168.25.5 | kubeadm安装 |
-| node1 | 192.168.25.4 | kubeadm安装 |
-| VIP | 192.168.25.6 | kubeadm安装 |
+|  node1  | 192.168.25.4 | kubeadm安装 |
+|   VIP   | 192.168.25.6 | kubeadm安装 |
 
 #### 配置haproxy
 

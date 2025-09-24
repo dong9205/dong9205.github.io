@@ -22,17 +22,8 @@ featuredImagePreview: ""
 hiddenFromHomePage: false
 hiddenFromSearch: false
 
-toc:
-  enable: true
-  auto: true
 
-mapbox:
-share:
-  enable: true
-comment:
-  enable: true
-
-lightgallery: true
+lightgallery: false
 ---
 > 本文由 [简悦 SimpRead](http://ksria.com/simpread/) 转码， 原文地址 [zhuanlan.zhihu.com](https://zhuanlan.zhihu.com/p/370046252)
 

@@ -22,17 +22,8 @@ featuredImagePreview: ""
 hiddenFromHomePage: false
 hiddenFromSearch: false
 
-toc:
-  enable: true
-  auto: true
 
-mapbox:
-share:
-  enable: true
-comment:
-  enable: true
-
-lightgallery: true
+lightgallery: false
 ---
 
 # React Antd ProTable expandable.expandedRowRender支持滚动更新

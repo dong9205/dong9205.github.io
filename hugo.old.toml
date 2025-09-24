@@ -1,0 +1,12 @@
+# baseURL = 'https://example.org/'
+# # 网站语言, 仅在这里 CN 大写 ["en-us", "zh-CN", "fr", "pl", ...]
+# languageCode = "zh-CN"
+# title = 'My New Hugo Site'
+# theme = 'FixIt'
+# defaultContentLanguage = 'zh-cn'
+# [markup]
+# _merge = "shallow"
+# [outputs]
+# _merge = "shallow"
+# [taxonomies]
+# _merge = "shallow"

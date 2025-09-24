@@ -24,17 +24,8 @@ featuredImagePreview: ""
 hiddenFromHomePage: false
 hiddenFromSearch: false
 
-toc:
-  enable: true
-  auto: true
 
-mapbox:
-share:
-  enable: true
-comment:
-  enable: true
-
-lightgallery: true
+lightgallery: false
 ---
 
 ## 一、istio多集群模型介绍
@@ -152,13 +143,13 @@ EOF
 * Makefile.selfsigned.mk：基于生成的自签名根创建证书。
 
 下表描述了两个 Makefile 支持的目标
- | <div style="width: 106pt">Make Target | <div style="width: 146pt">Makefile | Description | 
- | :------ | :-------- | :----------- | 
- | `root-ca` | `Makefile.selfsigned.mk` | 生成自签名根 CA 密钥和证书. | 
- | `fetch-root-ca` | `Makefile.k8s.mk` | 使用默认 `kubeconfig` 中的当前上下文从 Kubernetes 集群获取 Istio CA. | 
- | `$NAME-cacerts` | Both | 为具有 `$NAME` 的集群或虚拟机（例如 `us-east`、`cluster01` 等）生成由根 CA 签名的中间证书。它们存储在 `$NAME` 目录下。为了区分集群，我们在证书`主题`字段中包含`位置` (`L`) 名称以及集群名称。| 
- | `$NAMESPACE-certs` | Both | 使用根证书为使用 serviceAccount `$SERVICE_ACCOUNT` 连接到命名空间 `$NAMESPACE` 的虚拟机生成中间证书和签名证书，并将它们存储在 `$NAMESPACE` 目录下。 | 
- | `clean` | Both | 删除任何生成的根证书、密钥和中间文件。. | 
+ | <div style="width: 106pt">Make Target | <div style="width: 146pt">Makefile | Description                                                                                                                                                                                   |
+ | :------------------------------------ | :--------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+ | `root-ca`                             | `Makefile.selfsigned.mk`           | 生成自签名根 CA 密钥和证书.                                                                                                                                                                   |
+ | `fetch-root-ca`                       | `Makefile.k8s.mk`                  | 使用默认 `kubeconfig` 中的当前上下文从 Kubernetes 集群获取 Istio CA.                                                                                                                          |
+ | `$NAME-cacerts`                       | Both                               | 为具有 `$NAME` 的集群或虚拟机（例如 `us-east`、`cluster01` 等）生成由根 CA 签名的中间证书。它们存储在 `$NAME` 目录下。为了区分集群，我们在证书`主题`字段中包含`位置` (`L`) 名称以及集群名称。 |
+ | `$NAMESPACE-certs`                    | Both                               | 使用根证书为使用 serviceAccount `$SERVICE_ACCOUNT` 连接到命名空间 `$NAMESPACE` 的虚拟机生成中间证书和签名证书，并将它们存储在 `$NAMESPACE` 目录下。                                           |
+ | `clean`                               | Both                               | 删除任何生成的根证书、密钥和中间文件。.                                                                                                                                                       |
 
 #### 创建一个目录来存放证书和密钥
 

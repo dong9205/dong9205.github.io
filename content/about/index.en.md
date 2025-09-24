@@ -5,7 +5,7 @@ draft: false
 description: "关于 LoveIt"
 images: ["getqrcode"]
 
-lightgallery: true
+lightgallery: false
 
 math:
   enable: true
