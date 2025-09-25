@@ -5,13 +5,11 @@ subtitle: ""
 date: 2023-12-27T20:09:28+08:00
 lastmod: 2023-12-27T20:09:28+08:00
 draft: false
-author: "Derrick"
-authorLink: "https://www.p-pp.cn/"
 summary: ""
 license: ""
-tags: [""]
+tags: ["DNS"]
 categories: 
-- "documentation"
+- "DNS"
 resources:
 - name: "featured-image"
   src: "k8s-服务发现架构.webp"
@@ -20,10 +18,20 @@ featuredImagePreview: ""
 
 hiddenFromHomePage: false
 hiddenFromSearch: false
-
-
+hiddenFromRelated: false
+hiddenFromFeed: false
+toc: true
+math: false
 lightgallery: false
+password:
+message:
+repost:
+  enable: false
+  url: 
+# See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
 ---
+
+<!--more-->
 
 > 本文由 [简悦 SimpRead](http://ksria.com/simpread/) 转码， 原文地址 [www.jianshu.com](https://www.jianshu.com/p/f6b46fe2cbfb)
 

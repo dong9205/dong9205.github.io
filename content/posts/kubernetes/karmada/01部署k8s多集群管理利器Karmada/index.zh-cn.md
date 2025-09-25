@@ -5,8 +5,6 @@ subtitle: ""
 date: 2024-02-19T14:54:29+08:00
 lastmod: 2024-02-19T14:54:29+08:00
 draft: false
-author: "Derrick"
-authorLink: "https://www.p-pp.cn/"
 summary: ""
 license: ""
 tags: ["K8S"]
@@ -14,15 +12,27 @@ resources:
 - name: "featured-image"
   src: ""
 categories: 
-- "documentation"
+- "Kubernetes"
 
 featuredImage: ""
 featuredImagePreview: ""
 
 hiddenFromHomePage: false
 hiddenFromSearch: false
+hiddenFromRelated: false
+hiddenFromFeed: false
+toc: true
+math: false
 lightgallery: false
+password:
+message:
+repost:
+  enable: false
+  url: 
+# See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
 ---
+
+<!--more-->
 
 # 部署k8s多集群管理利器Karmada
 

@@ -1,8 +1,7 @@
 ---
 title: "Alerts and Admonition Syntax Test"
 date: 2025-09-05T16:57:58+08:00
-draft: false
-collections:
+draft: falsecollections:
   - Tests
 categories:
   - Markdown

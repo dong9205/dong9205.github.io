@@ -5,14 +5,12 @@ subtitle: ""
 date: 2023-12-19T14:47:54+08:00
 lastmod: 2023-12-19T14:47:54+08:00
 draft: false
-author: "Derrick"
-authorLink: "https://www.p-pp.cn/"
 summary: ""
 license: ""
 tags:
 - "nginx"
 categories: 
-- "documentation"
+- "Nginx"
 resources:
 - name: featured-image
   src: featured-image.jpg
@@ -20,10 +18,20 @@ resources:
 
 hiddenFromHomePage: false
 hiddenFromSearch: false
-
-
+hiddenFromRelated: false
+hiddenFromFeed: false
+toc: true
+math: false
 lightgallery: false
+password:
+message:
+repost:
+  enable: false
+  url: 
+# See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
 ---
+
+<!--more-->
 
 # Nginx 502问题排查
 

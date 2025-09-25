@@ -5,37 +5,38 @@ subtitle: ""
 date: 2023-11-30T17:56:35+08:00
 lastmod: 2023-12-04T13:40:35+08:00
 draft: false
-author: "Derrick"
-authorLink: "https://www.p-pp.cn/"
+toc: true
 summary: "kubeadm 使用静态POD启动KeepAlived和Haproxy"
-images: []
-resources:
-- name: "featured-image"
-  src: "kubernetes.png"
-
-license: ""
-
-tags: 
-- "kubernetes"
-- "linux"
-- "haproxy"
-- "keepalived"
-- "高可用"
-
-categories: 
-- "documentation"
-- "kubernetes"
-
-featuredImage: ""
-featuredImagePreview: ""
-
-
+license:
+tags:
+  - "kubernetes"
+  - "linux"
+  - "haproxy"
+  - "keepalived"
+  - "高可用"
+categories:
+  - "kubernetes"
 hiddenFromHomePage: false
 hiddenFromSearch: false
+hiddenFromRelated: false
+hiddenFromFeed: false
+summary:
+resources:
+  - name: featured-image
+    src: 
+  - name: featured-image-preview
+    src: featured-image-preview.jpg
+math: false
 lightgallery: false
+password:
+message:
+repost:
+  enable: false
+  url:
+# See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
 ---
-# kubeadm高可用集群
 
+<!--more-->
 ## 基础环境初始化
 
 ### 安装Docker,Containerd
@@ -125,8 +126,6 @@ sudo systemctl enable --now kubelet
 ```
 
 ## 使用内部etcd构建高可用集群
-
-
 
 ### kube-apiserver负载均衡器
 

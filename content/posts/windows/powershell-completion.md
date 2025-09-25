@@ -5,15 +5,12 @@ subtitle: ""
 date: 2023-11-30T16:30:48+08:00
 lastmod: 2023-11-30T16:30:48+08:00
 draft: false
-author: "Derrick"
-authorLink: "https://www.p-pp.cn/"
 license: ""
 
 tags: 
 - "windows"
 
 categories: 
-- "documentation"
 - "windows"
 
 featuredImage: ""

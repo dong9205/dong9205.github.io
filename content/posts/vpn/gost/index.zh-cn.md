@@ -5,26 +5,34 @@ subtitle: ""
 date: 2024-09-11T19:47:08+08:00
 lastmod: 2024-09-11T19:47:08+08:00
 draft: false
-author: "Derrick"
-authorLink: "https://www.p-pp.cn/"
 summary: ""
 license: ""
-tags: [""]
+tags: ["gost"]
 resources:
 - name: "featured-image"
   src: ""
 categories: 
-- "documentation"
+- "VPN"
 
 featuredImage: ""
 featuredImagePreview: ""
 
 hiddenFromHomePage: false
 hiddenFromSearch: false
-
-
+hiddenFromRelated: false
+hiddenFromFeed: false
+toc: true
+math: false
 lightgallery: false
+password:
+message:
+repost:
+  enable: false
+  url: 
+# See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
 ---
+
+<!--more-->
 
 # gost配置反向代理隧道
 

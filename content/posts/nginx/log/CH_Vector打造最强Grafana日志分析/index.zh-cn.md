@@ -5,23 +5,26 @@ subtitle: ""
 date: 2024-11-06T15:16:51+08:00
 lastmod: 2024-11-06T15:16:51+08:00
 draft: false
-author: "Derrick"
-authorLink: "https://www.p-pp.cn/"
 summary: ""
 license: ""
-tags: ["Grafana","ClickHouse","Vector"]
+tags: ["grafana","clickhouse","vector"]
 resources:
 - name: "featured-image"
   src: ""
 categories: 
-- "documentation"
+- "Clickhouse"
+- "Vector"
+- "Grafana"
 
 featuredImage: ""
 featuredImagePreview: ""
 
 toc: true
 lightgallery: false
+# See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
 ---
+
+<!--more-->
 
 ## Nginx
 

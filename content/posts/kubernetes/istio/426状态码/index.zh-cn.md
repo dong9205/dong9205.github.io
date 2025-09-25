@@ -5,8 +5,6 @@ subtitle: ""
 date: 2023-12-28T10:44:47+08:00
 lastmod: 2023-12-28T10:44:47+08:00
 draft: false
-author: "Derrick"
-authorLink: "https://www.p-pp.cn/"
 summary: ""
 license: ""
 tags: [""]
@@ -14,17 +12,27 @@ resources:
 - name: "featured-image"
   src: ""
 categories: 
-- "documentation"
+- "Istio"
 
 featuredImage: ""
 featuredImagePreview: ""
 
 hiddenFromHomePage: false
 hiddenFromSearch: false
-
-
+hiddenFromRelated: false
+hiddenFromFeed: false
+toc: true
+math: false
 lightgallery: false
+password:
+message:
+repost:
+  enable: false
+  url: 
+# See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
 ---
+
+<!--more-->
 > 本文由 [简悦 SimpRead](http://ksria.com/simpread/) 转码， 原文地址 [zhuanlan.zhihu.com](https://zhuanlan.zhihu.com/p/370046252)
 
 > 本文摘自 **[istio 学习笔记](https://link.zhihu.com/?target=https%3A//imroc.cc/learning-istio/faq/426-status-code.html)**  

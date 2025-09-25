@@ -5,28 +5,36 @@ subtitle: ""
 date: 2024-01-21T13:42:05+08:00
 lastmod: 2024-01-21T13:42:05+08:00
 draft: false
-author: "Derrick"
-authorLink: "https://www.p-pp.cn/"
 summary: ""
 license: ""
 tags: 
-- vpn
+- greenvpn
 - process-monitor
 resources:
 - name: "featured-image"
   src: "核心进程被其他软件杀死.png"
 categories: 
-- "documentation"
+- "VPN"
 
 featuredImage: ""
 featuredImagePreview: ""
 
 hiddenFromHomePage: false
 hiddenFromSearch: false
-
-
+hiddenFromRelated: false
+hiddenFromFeed: false
+toc: true
+math: false
 lightgallery: false
+password:
+message:
+repost:
+  enable: false
+  url: 
+# See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
 ---
+
+<!--more-->
 
 ## greenvpn介绍
 

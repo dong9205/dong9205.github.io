@@ -5,24 +5,34 @@ subtitle: ""
 date: 2024-11-11T11:25:57+08:00
 lastmod: 2024-11-11T11:25:57+08:00
 draft: false
-author: "Derrick"
-authorLink: "https://www.p-pp.cn/"
 summary: ""
 license: ""
-tags: ["Go"]
 resources:
 - name: "featured-image"
   src: ""
-categories: 
-- "documentation"
-
+tags:
+  - Go
+categories:
+  - Go
 featuredImage: ""
 featuredImagePreview: ""
 
 hiddenFromHomePage: false
 hiddenFromSearch: false
+hiddenFromRelated: false
+hiddenFromFeed: false
+toc: true
+math: false
 lightgallery: false
+password:
+message:
+repost:
+  enable: false
+  url: 
+# See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
 ---
+
+<!--more-->
 > 本文由 [简悦 SimpRead](http://ksria.com/simpread/) 转码， 原文地址 [blog.csdn.net](https://blog.csdn.net/weixin_44621343/article/details/133148154)
 
 Go 多版本管理工具

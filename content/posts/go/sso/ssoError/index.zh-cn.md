@@ -5,8 +5,6 @@ subtitle: ""
 date: 2024-10-11T20:52:22+08:00
 lastmod: 2024-10-11T20:52:22+08:00
 draft: false
-author: "Derrick"
-authorLink: "https://www.p-pp.cn/"
 summary: ""
 license: ""
 tags: [""]
@@ -14,15 +12,27 @@ resources:
 - name: "featured-image"
   src: ""
 categories: 
-- "documentation"
+- "SSO"
 
 featuredImage: ""
 featuredImagePreview: ""
 
 hiddenFromHomePage: false
 hiddenFromSearch: false
+hiddenFromRelated: false
+hiddenFromFeed: false
+toc: true
+math: false
 lightgallery: false
+password:
+message:
+repost:
+  enable: false
+  url: 
+# See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
 ---
+
+<!--more-->
 
 # SAML登录异常错误记录
 

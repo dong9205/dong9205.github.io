@@ -5,26 +5,34 @@ subtitle: ""
 date: 2024-07-30T10:26:40+08:00
 lastmod: 2024-07-30T10:26:40+08:00
 draft: false
-author: "Derrick"
-authorLink: "https://www.p-pp.cn/"
 summary: ""
 license: ""
-tags: [""]
+tags: ["go","diff"]
 resources:
 - name: "featured-image"
   src: ""
 categories: 
-- "documentation"
+- "Go"
 
 featuredImage: ""
 featuredImagePreview: ""
 
 hiddenFromHomePage: false
 hiddenFromSearch: false
-
-
+hiddenFromRelated: false
+hiddenFromFeed: false
+toc: true
+math: false
 lightgallery: false
+password:
+message:
+repost:
+  enable: false
+  url: 
+# See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
 ---
+
+<!--more-->
 
 # 发版内容diff
 

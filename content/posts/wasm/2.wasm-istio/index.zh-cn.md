@@ -5,26 +5,34 @@ subtitle: ""
 date: 2024-01-26T16:27:41+08:00
 lastmod: 2024-01-26T16:27:41+08:00
 draft: false
-author: "Derrick"
-authorLink: "https://www.p-pp.cn/"
 summary: ""
 license: ""
-tags: [""]
+tags: ["wasm","istio"]
 resources:
 - name: "featured-image"
   src: ""
 categories: 
-- "documentation"
+- "WASM"
 
 featuredImage: ""
 featuredImagePreview: ""
 
 hiddenFromHomePage: false
 hiddenFromSearch: false
-
-
+hiddenFromRelated: false
+hiddenFromFeed: false
+toc: true
+math: false
 lightgallery: false
+password:
+message:
+repost:
+  enable: false
+  url: 
+# See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
 ---
+
+<!--more-->
 
 # 使用 WebAssembly 对 Istio 进行扩展
 

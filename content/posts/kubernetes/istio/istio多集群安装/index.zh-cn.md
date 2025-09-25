@@ -5,8 +5,6 @@ subtitle: ""
 date: 2024-01-15T20:35:01+08:00
 lastmod: 2024-01-15T20:35:01+08:00
 draft: false
-author: "Derrick"
-authorLink: "https://www.p-pp.cn/"
 summary: ""
 license: ""
 tags: 
@@ -16,17 +14,27 @@ resources:
 - name: "featured-image"
   src: ""
 categories: 
-- "documentation"
+- "Istio"
 
 featuredImage: ""
 featuredImagePreview: ""
 
 hiddenFromHomePage: false
 hiddenFromSearch: false
-
-
+hiddenFromRelated: false
+hiddenFromFeed: false
+toc: true
+math: false
 lightgallery: false
+password:
+message:
+repost:
+  enable: false
+  url: 
+# See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
 ---
+
+<!--more-->
 
 ## 一、istio多集群模型介绍
 Istio 多集群网格有多种模型，在网络拓扑上分为扁平网络和非扁平网络，在控制面上分为单一控制平面和多控制平面。

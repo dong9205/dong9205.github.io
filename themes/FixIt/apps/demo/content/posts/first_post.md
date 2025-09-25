@@ -1,8 +1,7 @@
 ---
 title: My First Post
 date: 2023-02-20T20:14:22+08:00
-draft: false
-categories:
+draft: falsecategories:
   - blog
 collections:
   - blog

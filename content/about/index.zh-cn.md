@@ -9,7 +9,10 @@ lightgallery: false
 
 math:
   enable: true
+# See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
 ---
+
+<!--more-->
 
 {{< style "img { height: 1.25rem; }" >}}
 

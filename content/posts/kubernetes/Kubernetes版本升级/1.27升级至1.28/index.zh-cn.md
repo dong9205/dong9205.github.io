@@ -5,26 +5,31 @@ subtitle: ""
 date: 2024-08-23T21:15:18+08:00
 lastmod: 2024-08-23T21:15:18+08:00
 draft: false
-author: "Derrick"
-authorLink: "https://www.p-pp.cn/"
 summary: ""
 license: ""
-tags: [""]
-resources:
-- name: "featured-image"
-  src: ""
+tags: ["kubernetes"]
 categories: 
-- "documentation"
+- "Kubernetes"
 
 featuredImage: ""
 featuredImagePreview: ""
 
 hiddenFromHomePage: false
 hiddenFromSearch: false
-
-
+hiddenFromRelated: false
+hiddenFromFeed: false
+toc: true
+math: false
 lightgallery: false
+password:
+message:
+repost:
+  enable: false
+  url: 
+# See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
 ---
+
+<!--more-->
 
 ## 介绍
 

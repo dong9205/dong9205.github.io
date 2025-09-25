@@ -383,7 +383,7 @@ enableEmoji = true
 
   # Author Configuration
   [params.author]
-    name = "董大轩"
+    name = "Derrick"
     email = "920506213@qq.com"
     link = "https://www.p-pp.cn"
     avatar = ""
@@ -543,7 +543,7 @@ enableEmoji = true
     # special amount of posts in archives page
     paginate = 20
     # date format (month and day)
-    dateFormat = "01-02"
+    dateFormat = "2006-01-02"
 
   # Section page config (all pages in section)
   [params.section]
@@ -573,7 +573,7 @@ enableEmoji = true
 
   # FixIt 0.3.13 | NEW recently updated pages config for archives, section and term list
   [params.recentlyUpdated]
-    archives = true
+    archives = false
     section = true
     list = true
     days = 30
@@ -612,7 +612,7 @@ enableEmoji = true
     [params.home.posts]
       enable = true
       # special amount of posts in each home posts page
-      paginate = 6
+      paginate = 9
 
   # FixIt 0.2.16 | CHANGED Social config about the author
   [params.social]
