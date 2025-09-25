@@ -9,7 +9,7 @@ author: "Derrick"
 authorLink: "https://www.p-pp.cn/"
 summary: ""
 license: ""
-tags: [""]
+tags: ["Grafana","ClickHouse","Vector"]
 resources:
 - name: "featured-image"
   src: ""
@@ -19,14 +19,9 @@ categories:
 featuredImage: ""
 featuredImagePreview: ""
 
-hiddenFromHomePage: false
-hiddenFromSearch: false
-
 toc: true
 lightgallery: false
 ---
-
-# 介绍
 
 ## Nginx
 

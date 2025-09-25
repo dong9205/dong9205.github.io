@@ -23,6 +23,11 @@ hiddenFromHomePage: false
 hiddenFromSearch: false
 lightgallery: false
 ---
+> 本文由 [简悦 SimpRead](http://ksria.com/simpread/) 转码， 原文地址 [blog.csdn.net](https://blog.csdn.net/weixin_44621343/article/details/133148154)
+
+Go 多版本管理工具
+----------------------------------------------------------------------------------------------------------------------------
+
 
 在平时开发中，本地新旧项目并行开发的过程中，你大概率会遇到一个令人头疼的问题，如何同时使用两个不同版本的 Golang Runtime 进行开发呢？
 
@@ -32,7 +37,7 @@ lightgallery: false
 
 #### 1.1 使用方法：
 
-在项目中[初始化](https://so.csdn.net/so/search?q=%E5%88%9D%E5%A7%8B%E5%8C%96&spm=1001.2101.3001.7020) Go Modules：
+在项目中初始化 Go Modules：
 
 ```
 go mod init <module-name>
@@ -48,7 +53,7 @@ go<x.y> version
 
 ```
 
-![][img-0]
+![alt text](image.png)
 
 切换全局 Go 版本：
 
