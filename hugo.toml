@@ -1298,7 +1298,7 @@ enableEmoji = true
         shortname = ""
       # Gitalk comment config (https://github.com/gitalk/gitalk)
       [params.page.comment.gitalk]
-        enable = true
+        enable = false
         owner = "dong9205"
         repo = "dong9205.github.io"
         clientId = ""
@@ -1388,12 +1388,12 @@ enableEmoji = true
         katex = false
       # FixIt 0.2.14 | NEW Giscus comments config
       [params.page.comment.giscus]
-        enable = false
-        repo = ""
+        enable = true
+        repo = "dong9205/dong9205.github.io"
         repoId = ""
-        category = ""
+        category = "Announcements"
         categoryId = ""
-        mapping = ""
+        mapping = "title"
         origin = "https://giscus.app" # FixIt NEW | 0.3.7 Or set it to your self-hosted domain
         strict = "0" # FixIt NEW | 0.2.18
         term = ""
@@ -1401,7 +1401,7 @@ enableEmoji = true
         emitMetadata = "0"
         inputPosition = "bottom" # ["top", "bottom"]
         lang = ""
-        lightTheme = "light"
+        lightTheme = "preferred_color_scheme"
         darkTheme = "dark"
         lazyLoad = true
     # Third-party library config
