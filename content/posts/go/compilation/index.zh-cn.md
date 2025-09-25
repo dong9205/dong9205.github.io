@@ -2,12 +2,12 @@
 title: Go语言交叉编译
 subtitle:
 date: 2025-09-25T13:44:24+08:00
-# slug: 94ea090
+slug: 94ea090
 draft: false
 description: 
 keywords:
 license:
-comment: false
+comment: true
 weight: 0
 tags:
   - Go
@@ -29,7 +29,7 @@ lightgallery: false
 password:
 message:
 repost:
-  enable: true
+  enable: false
   url: https://blog.csdn.net/gitblog_00445/article/details/151852088
 
 # See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
