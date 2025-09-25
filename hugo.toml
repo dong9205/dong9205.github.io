@@ -435,8 +435,8 @@ enableEmoji = true
     absoluteURL = false
     [params.search.algolia]
       index = "index.zh-cn"
-      appID = "PASDMWALPK"
-      searchKey = "b42948e51daaa93df92381c8e2ac0f93"
+      appID = ""
+      searchKey = ""
     [params.search.fuse]
       # FixIt 0.2.17 | NEW https://fusejs.io/api/options.html
       isCaseSensitive = false
@@ -1264,7 +1264,7 @@ enableEmoji = true
       Mix = false
     # FixIt 0.2.15 | CHANGED Comment config
     [params.page.comment]
-      enable = false
+      enable = true
       # FixIt 0.2.13 | NEW Artalk comment config (https://artalk.js.org/)
       [params.page.comment.artalk]
         enable = false
@@ -1298,16 +1298,16 @@ enableEmoji = true
         shortname = ""
       # Gitalk comment config (https://github.com/gitalk/gitalk)
       [params.page.comment.gitalk]
-        enable = false
-        owner = ""
-        repo = ""
+        enable = true
+        owner = "dong9205"
+        repo = "dong9205.github.io"
         clientId = ""
         clientSecret = ""
       # Valine comment config (https://github.com/xCss/Valine)
       [params.page.comment.valine]
-        enable = true
-        appId = "JxkzOOlXpIBH5gvshgaFQa3S-gzGzoHsz"
-        appKey = "paoH5vV12cfEJY8Uj7hjZ5ww"
+        enable = false
+        appId = ""
+        appKey = ""
         placeholder = ""
         avatar = "mp"
         meta = ['nick','mail','link']
