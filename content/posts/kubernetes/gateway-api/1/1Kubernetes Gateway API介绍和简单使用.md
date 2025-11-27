@@ -5,14 +5,14 @@ date: 2025-11-28T01:05:17+08:00
 slug: 1e2294ddd
 draft: false
 author:
-  name:
-  link:
-  email:
+  name: Derrick
+  link: https://www.p-pp.cn/
+  email: 920506213@qq.com
   avatar:
 description:
 keywords:
 license:
-comment: false
+comment: true
 weight: 0
 tags:
   - kubernetes
@@ -34,7 +34,7 @@ lightgallery: false
 password:
 message:
 repost:
-  enable: true
+  enable: false
   url:
 
 # See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
