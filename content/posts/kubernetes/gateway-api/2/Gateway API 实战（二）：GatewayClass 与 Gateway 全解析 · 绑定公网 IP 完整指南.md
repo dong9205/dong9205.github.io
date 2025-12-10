@@ -28,7 +28,7 @@ summary:
 resources:
   - name: resource-model
     src: resource-model.png
-toc: false
+toc: true
 math: false
 lightgallery: false
 password:
