@@ -3,16 +3,16 @@ title: {{ replace .TranslationBaseName "-" " " | title }}
 subtitle:
 date: {{ .Date }}
 slug: {{ substr .File.UniqueID 0 7 }}
-draft: true
+draft: false
 author:
-  name:
-  link:
-  email:
+  name: Derrick
+  link: https://www.p-pp.cn/
+  email: 920506213@qq.com
   avatar:
 description:
 keywords:
 license:
-comment: false
+comment: true
 weight: 0
 tags:
   - draft
@@ -34,7 +34,7 @@ lightgallery: false
 password:
 message:
 repost:
-  enable: true
+  enable: false
   url:
 
 # See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
